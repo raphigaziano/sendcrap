@@ -33,17 +33,11 @@ class TestConfig(unittest.TestCase):
         self.assertEqual('new@mail.woot', conf.ADRESSES.get('bob'))
 
     def test_nondefined_opts(self):
-        '''
-        Directly accessing non defined conf opts should raise a
-        KeyError Exception.
-        '''
+        '''Directly accessing non defined conf opts should raise a KeyError Exception.'''
         self.assertRaises(KeyError, lambda: conf.ADRESSES['poil'])
 
     def test_get_nondefined_opts(self):
-        '''
-        Accessing non defined conf opts with get method return None of
-        def value
-        '''
+        '''Accessing non defined conf opts with get method return None of def value'''
         self.assertEqual(None, conf.ADRESSES.get('poil'))
         self.assertEqual('foo', conf.ADRESSES.get('poil', 'foo'))
         
@@ -55,10 +49,7 @@ class TestConfig(unittest.TestCase):
 
     # This is testing configuration sanity rather than actual code...
     def test_groups_vals(self):
-        '''
-        All names in a group should be defined in the ADRESSES 
-        dict constant.
-        '''
+        '''All names in a group should be defined in the ADRESSES dict constant.'''
         for group, c_list in conf.GROUPS.items():
             for contact in c_list:
                 self.assertTrue(contact in conf.ADRESSES)

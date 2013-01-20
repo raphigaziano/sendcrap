@@ -45,3 +45,7 @@ def list_files(dir_=None, walk=False, exts=None, arb_files=None):
         
     return all_files
 
+def get_recipients():
+    '''TODO: tests and impl'''
+    pass
+    
