@@ -15,14 +15,14 @@ def list_files(dir_=None, walk=False, exts=None, arb_files=None):
     '''
     Return a list of all the files meeting the provided criterias.
     
-    :param dir_:      Optional. Search directory.
-    :param walk:      Boolean indicating if subdirectories should be 
+    @param dir_:      Optional. Search directory.
+    @param walk:      Boolean indicating if subdirectories should be 
                       searched. Defaults to False.
-    :param exts:      Optional. List of valid file extensions
-    :param arb_files: Optional. List of arbitrary files to be included.
+    @param exts:      Optional. List of valid file extensions
+    @param arb_files: Optional. List of arbitrary files to be included.
                       Those files will be added to the selection no 
                       matter what.
-    :returns:         List of relative paths to all valid files.
+    @returns:         List of relative paths to all valid files.
     '''
     if exts is None: exts = []
     if arb_files is None: arb_files = []
@@ -32,7 +32,6 @@ def list_files(dir_=None, walk=False, exts=None, arb_files=None):
             for root, dirs, files in os.walk(dir_):
                 for f in files:
                     if exts and not f.endswith(*exts): continue
-                    print os.path.join(root, f)
                     all_files.append(os.path.join(root, f))
         else:
             for f in os.listdir(dir_):

@@ -8,14 +8,18 @@ them all.
 This should be run from the project's top directory, so that any of the
 imported test modules can import their needed project files.
 
-:author:    raphi <r.gaziano@gmail.com>
-:date:      20.01.2013
-:version:   1.0
+Tested with:
+    - py2.7 on win7
+    
+Author:     raphi <r.gaziano@gmail.com>
+Date:       20.01.2013
+Version:    1.0
 """
 import unittest
 import sys
 import os
 
+# Is this ugly ?
 path = os.getcwd()
 sys.path.append(path)
 
