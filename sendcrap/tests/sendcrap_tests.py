@@ -8,6 +8,9 @@ them all.
 This should be run from the project's top directory, so that any of the
 imported test modules can import their needed project files.
 
+I'm hoping this is generic enough not to trip up any test running 
+framework. For now I can only assert that nose doesn't mind.
+
 Tested with:
     - py2.7 on win7
     
@@ -26,7 +29,8 @@ sys.path.append(path)
 suite = unittest.TestSuite()
 
 # Dynamic building of the whole test suite
-for f in os.listdir(os.path.dirname(__file__)):
+dir_ = os.path.dirname(os.path.realpath(__file__))
+for f in os.listdir(dir_):
     if f == os.path.basename(__file__): continue
     if f == '__init__.py':              continue
     name, ext = os.path.splitext(f)
