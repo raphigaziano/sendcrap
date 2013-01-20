@@ -22,3 +22,10 @@ so the other options are easy to override.
 I'm barely getting started and am not sure how the damn thing will 
 actually work when it's done, so i'll update this readme with moar doc
 when i actually get a clue.
+
+I'm developping with Python 2.7. I'll probably try and make it 
+compatible with py3.2, but I'll bother when the basic thing is done.
+
+Also, i'm planning on using the clint library, because it's got an 
+awesome name, so that'll be at least one dependency. We'll see about 
+others later.
