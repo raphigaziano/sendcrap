@@ -11,15 +11,16 @@ import unittest
 import conf_sample as conf
 
 class TestConfig(unittest.TestCase):
-    '''Archiving/Compression Tests'''
+    '''Config file Tests'''
     def setUp(self): 
+        pass
+        
+    def tearDown(self):
         '''
         Reload conf module to ensure its back to its original state
         for each test
         '''
         reload(conf)
-        
-    def tearDown(self): pass
     
     def test_read_conf(self):
         '''Retrieving data from the config file'''
