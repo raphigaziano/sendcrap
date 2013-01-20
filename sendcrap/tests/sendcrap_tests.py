@@ -12,7 +12,10 @@ I'm hoping this is generic enough not to trip up any test running
 framework. For now I can only assert that nose doesn't mind.
 
 Tested with:
-    - py2.7 on win7
+-win7:
+    py2.7, py3.2
+-linux 2.6 (mint):
+    py2.6, py2.7, py3.2
     
 Author:     raphi <r.gaziano@gmail.com>
 Date:       20.01.2013
