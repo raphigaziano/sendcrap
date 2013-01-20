@@ -22,7 +22,7 @@ class TestFilesList(unittest.TestCase):
         self.assertTrue(all([r in expected for r in received]))
     
     def test_file_list_all(self):
-        '''All files from the directory should be listed if no args are provided'''
+        '''list_files(dir) should return all files from dir'''
         pathes = [
             os.path.join(TEST_DATA_DIR, 'CV_rGaziano_dev_2012.pdf'),
             os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
@@ -32,7 +32,7 @@ class TestFilesList(unittest.TestCase):
         self._check_pathes(pathes, files)
 
     def test_file_list_all_recursive(self):
-        '''All files from all subdirectories if recursion is requested'''
+        '''list_files(dir, walk=True) should browse directories recursively'''
         pathes = [
             os.path.join(TEST_DATA_DIR, 'CV_rGaziano_dev_2012.pdf'),
             os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
@@ -44,7 +44,7 @@ class TestFilesList(unittest.TestCase):
         self._check_pathes(pathes, files)
     
     def test_file_list_arbitrary(self):
-        '''If arbitrary files and no dir are specified, then only the spec files should be returned'''
+        '''list_files(arb_files=[...]) should return only the requested files'''
         pathes = [
             os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
             os.path.join(TEST_DATA_DIR, 'subdir', 'wagonwheel.mp3'),
@@ -73,7 +73,7 @@ class TestFilesList(unittest.TestCase):
         self._check_pathes(pathes, files)
             
     def test_file_list_exts(self):
-        '''The files to be compressed should all have the provided extension'''
+        '''list_files(dir, exts=[...]): all files returned should have the right extension(s)'''
         # .txt
         pathes = [os.path.join(TEST_DATA_DIR, 'randomcrap.txt')]
         files  = list_files(TEST_DATA_DIR, exts=['.txt'])
@@ -92,7 +92,7 @@ class TestFilesList(unittest.TestCase):
         self._check_pathes(pathes, files)
         
     def test_file_list_exts_plus_recursive(self):
-        '''Specified extension plus recursion'''
+        '''list_files(dir, walk=True, exts=[...]): combining recurive search and exts filtering'''
         pathes = [
             os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
             os.path.join(TEST_DATA_DIR, 'subdir', 'honkytonkbooze.txt')
@@ -101,7 +101,7 @@ class TestFilesList(unittest.TestCase):
         self._check_pathes(pathes, files)
         
     def test_all_opts_at_once(self):
-        '''Going wild!!!'''
+        '''Testing list_files() with all args set'''
         pathes = [
             os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
             os.path.join(TEST_DATA_DIR, 'subdir', 'honkytonkbooze.txt'),
@@ -114,7 +114,7 @@ class TestFilesList(unittest.TestCase):
         self._check_pathes(pathes, files)
         
     def test_no_input(self):
-        '''No input should return an empty list'''
+        '''list_file() (No args) should return an empty list'''
         pathes = []
         files = list_files()
         self._check_pathes(pathes, files)
