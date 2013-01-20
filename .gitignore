@@ -36,3 +36,4 @@ nosetests.xml
 
 # Project specfic
 config.py
+codetests/*
