@@ -1,37 +1,33 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
-
 """
 Main test file.
-Dynamically builds test suites out of all the other test files and run 
+Dynamically build a test suite out of all the other test files and run 
 them all.
-"""
 
+This should be run from the project's top directory, so that any of the
+imported test modules can import their needed project files.
+
+:author:    raphi <r.gaziano@gmail.com>
+:date:      20.01.2013
+:version:   1.0
+"""
 import unittest
+import sys
 import os
-import imp
+
+path = os.getcwd()
+sys.path.append(path)
 
 suite = unittest.TestSuite()
 
 # Dynamic building of the whole test suite
-# BROKEN :(:(:(
 for f in os.listdir(os.path.dirname(__file__)):
     if f == os.path.basename(__file__): continue
     if f == '__init__.py':              continue
     name, ext = os.path.splitext(f)
     if ext == '.py' and f.startswith('test'):
-        #~ try:
-            #~ # This will work if running the script directly,
-            #~ # ie python app/tests/app_tests
-            #~ test_module = __import__(name)
-        #~ except ImportError:
-            #~ # For some reason, nosetests needs this version
-            #~ # (Which screws up the direct import)
-            #~ test_module = __import__("sendcrap.tests.%s" % name, 
-                                     #~ fromlist=["sendcrap", "tests"])
-        test_module = __import__(name, 
-                         globals=globals(),
-                         fromlist=[name])
+        test_module = __import__(name, globals())
         suite.addTest(test_module.suite())
 
 if __name__ == '__main__':
