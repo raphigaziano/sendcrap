@@ -44,14 +44,14 @@ class TestFilesList(unittest.TestCase):
         self._check_pathes(pathes, files)
     
     def test_file_list_arbitrary(self):
-        '''list_files(arb_files=[...]) should return only the requested files'''
+        '''list_files(arbs=[...]) should return only the requested files'''
         pathes = [
             os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
             os.path.join(TEST_DATA_DIR, 'subdir', 'wagonwheel.mp3'),
             'setup.py',
             'sendcrap/tests/test_file_list.py'
         ]
-        files = list_files(arb_files=pathes)
+        files = list_files(arbs=pathes)
         self._check_pathes(pathes, files)
 
     def test_file_list_arbitrary_plus_params(self):
@@ -62,14 +62,14 @@ class TestFilesList(unittest.TestCase):
             os.path.join(TEST_DATA_DIR, 'tumblr_m0byyulRLo1qc5ep4o1_500.jpg'),
             'setup.py'
         ]
-        files = list_files(TEST_DATA_DIR, arb_files=['setup.py'])
+        files = list_files(TEST_DATA_DIR, arbs=['setup.py'])
         self._check_pathes(pathes, files)
         
         pathes = [
             os.path.join(TEST_DATA_DIR, 'tumblr_m0byyulRLo1qc5ep4o1_500.jpg'),
             'sendcrap/getfiles.py'
         ]
-        files  = list_files(TEST_DATA_DIR, exts=['.jpg'], arb_files=['sendcrap/getfiles.py'])
+        files  = list_files(TEST_DATA_DIR, exts=['.jpg'], arbs=['sendcrap/getfiles.py'])
         self._check_pathes(pathes, files)
             
     def test_file_list_exts(self):
@@ -109,8 +109,8 @@ class TestFilesList(unittest.TestCase):
             os.path.join('MANIFEST.in')
         ]
         files  = list_files(TEST_DATA_DIR, walk=True, exts=['.txt'],
-            arb_files = [os.path.join('sendcrap', 'tests', 'test_file_list.py'),
-                         os.path.join('MANIFEST.in')])
+            arbs = [os.path.join('sendcrap', 'tests', 'test_file_list.py'),
+                    os.path.join('MANIFEST.in')])
         self._check_pathes(pathes, files)
         
     def test_no_input(self):
