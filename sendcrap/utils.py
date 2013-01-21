@@ -46,17 +46,30 @@ def list_files(dir_=None, walk=False, exts=None, arbs=None):
         
     return all_files
 
-def get_recipients(grp="", contacts=None, arbs=None):
-    '''TODO: tests and impl'''
+def get_recipients(grps=None, contacts=None, arbs=None):
+    '''
+    Return a list of contacts according to the provided args.
+    
+    @param grps:     Optional. List of requested contact groups.
+    @param contacts: Optional. List of requested contacts indexed in the 
+                     config file. 
+    @param arbs:     Optional. List of arbitrary mail adresses to be
+                     added to the selection.
+    @returns:        List of contact adresses, with no duplicates.
+    '''
+    if grps is None: grps = []
     if contacts is None: contacts = []
     if arbs is None: arbs = []
     all_recs = []
-    for contact in conf.GROUPS.get(grp, []):
-        all_recs.append(conf.ADRESSES[contact])
+    for grp in grps:
+        for contact in conf.GROUPS.get(grp, []):
+            all_recs.append(conf.ADRESSES[contact])
     for contact in contacts:
         all_recs.append(conf.ADRESSES[contact])
     for a in arbs:
         all_recs.append(a)
     
+    # Remove any duplicate
+    all_recs = list(set(all_recs))
     return all_recs
     
