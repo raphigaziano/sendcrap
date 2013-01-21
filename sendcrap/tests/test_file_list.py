@@ -7,7 +7,7 @@ Test the file listing utilities with various arguments.
 import unittest
 import os
 
-from sendcrap.utils import list_files
+from sendcrap.args import _list_files as list_files
 
 TEST_DATA_DIR = os.path.join("data", "test-data")
 

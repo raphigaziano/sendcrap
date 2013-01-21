@@ -5,12 +5,12 @@ Recipients test file.
 Test the retrieving of a recipients list.
 """
 import unittest
-from sendcrap.utils import get_recipients
+from sendcrap.args import _get_recipients as get_recipients
 
 # Replacing utils conf with the dummy sample config file
-from sendcrap import utils
+from sendcrap import args
 import conf_sample as conf
-utils.conf = conf
+args.conf = conf
 
 class TestRecipients(unittest.TestCase):
     '''Recipient retrieval Tests'''
