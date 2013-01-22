@@ -45,3 +45,20 @@ MAIL_TMPLS = dict(
         body   = "GNAAAAAAAAAAAANANZNZOIJ"
     )
 )
+
+### Conf checking ###
+#####################
+
+class ConfigError(AssertionError): pass
+
+def check_config():
+    ''' '''
+    # All names in a group should be defined in the ADRESSES dict 
+    # constant.
+    for group, c_list in GROUPS.items():
+        for contact in c_list:
+            if not contact in ADRESSES:
+                raise ConfigError
+    # ...
+    
+check_config()
