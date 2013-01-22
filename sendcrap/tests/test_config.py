@@ -8,6 +8,7 @@ Hmm... Most of those tests are testing python dicts rather than
 anything else...
 """
 import unittest
+import imp
 import conf_sample as conf
 
 class TestConfig(unittest.TestCase):
@@ -20,7 +21,7 @@ class TestConfig(unittest.TestCase):
         Reload conf module to ensure its back to its original state
         for each test
         '''
-        reload(conf)
+        imp.reload(conf)
     
     def test_read_conf(self):
         '''Retrieving data from the config file'''

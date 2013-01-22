@@ -49,8 +49,8 @@ class TestRecipients(unittest.TestCase):
         expected = conf.ADRESSES.values()
         self._check_recipients(expected, 
                                get_recipients(contacts=contacts))
-        contacts = contacts[:1] + contacts[-1:]
-        expected = expected[:1] + expected[-1:]
+        contacts = list(contacts)[:1] + list(contacts)[-1:]
+        expected = list(expected)[:1] + list(expected)[-1:]
         self._check_recipients(expected, 
                                get_recipients(contacts=contacts))
                                
