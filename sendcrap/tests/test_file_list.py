@@ -113,6 +113,26 @@ class TestFilesList(unittest.TestCase):
                     os.path.join('MANIFEST.in')])
         self._check_pathes(pathes, files)
         
+    def test_recursive_plus_exts(self):
+        '''list_files with recursion and filtered extensions'''
+        expected = [os.path.join(TEST_DATA_DIR, 
+                                 'subdir', 'wagonrythm.mp3')]
+        self._check_pathes(expected, 
+                           list_files(TEST_DATA_DIR, walk=True,
+                                      exts=['.mp3']))
+
+    def test_several_exts(self):
+        '''list_files with recursion and filtered extensions'''
+        expected = [
+            os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
+            os.path.join(TEST_DATA_DIR, 'subdir', 'honkytonkbooze.txt'),
+            os.path.join(TEST_DATA_DIR, 'subdir', 'wagonrythm.mp3'),
+            
+        ]
+        self._check_pathes(expected, 
+                           list_files(TEST_DATA_DIR, walk=True,
+                                      exts=['.txt', '.mp3']))
+        
     def test_no_input(self):
         '''list_file() (No args) should return an empty list'''
         pathes = []
