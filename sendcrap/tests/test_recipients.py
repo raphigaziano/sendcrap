@@ -12,17 +12,17 @@ from sendcrap import args
 import conf_sample as conf
 args.conf = conf
 
-def _check_recipients(expected, received):
-    '''Common helper for the individual tests''' 
-    self.assertTrue(all([e in received for e in expected]))
-    self.assertTrue(all([r in expected for r in received]))
-
-
 class TestRecipients(unittest.TestCase):
     '''Recipient retrieval Tests'''
     def setUp(self): pass
     def tearDown(self): pass
-        
+    
+    # @TODO: Move outside class
+    def _check_recipients(self, expected, received):
+        '''Common helper for the individual tests''' 
+        self.assertTrue(all([e in received for e in expected]))
+        self.assertTrue(all([r in expected for r in received]))
+    
     def test_no_input(self):
         '''get_recipients() (No args) should return an empty list'''
         self.assertEqual([], get_recipients())
@@ -31,7 +31,7 @@ class TestRecipients(unittest.TestCase):
         '''get_recipients([grp]) should return the requested group's adresses as a list'''
         for grp, c_list in conf.GROUPS.items():
             expected = [conf.ADRESSES[c] for c in c_list]
-            _check_recipients(expected, get_recipients([grp]))
+            self._check_recipients(expected, get_recipients([grp]))
     
     def test_get_multiple_groups(self):
         '''get_recipients([...]) should return all the requested groups' adresses as a list'''
@@ -41,17 +41,18 @@ class TestRecipients(unittest.TestCase):
             inp.append(grp)
             expected += [conf.ADRESSES[c] for c in c_list]
         expected = list(set(expected))
-        _check_recipients(expected, get_recipients(inp))
+        self._check_recipients(expected, get_recipients(inp))
 
     def test_get_contacts(self):
         '''get_recipients(contacts=[...]) should return the requested contacts' adresses'''
         contacts = conf.ADRESSES.keys()
         expected = conf.ADRESSES.values()
-        _check_recipients(expected, 
+        self._check_recipients(expected, 
                                get_recipients(contacts=contacts))
         contacts = contacts[:1] + contacts[-1:]
         expected = expected[:1] + expected[-1:]
-        _check_recipients(expected, get_recipients(contacts=contacts))
+        self._check_recipients(expected, 
+                               get_recipients(contacts=contacts))
                                
     def test_get_arbs(self):
         '''get_recipients(arbs=[...]) should return only the provided mail adresses'''
@@ -60,7 +61,7 @@ class TestRecipients(unittest.TestCase):
             'greenturnip@rattleboobies.com',
             'listless.porpoise@zogzog.org'
         ]
-        _check_recipients(expected, get_recipients(arbs=expected))
+        self._check_recipients(expected, get_recipients(arbs=expected))
 
     def test_get_group_plus_contacts(self):
         '''get_recipients(grps=[...], contacts=[...]'''
@@ -68,16 +69,16 @@ class TestRecipients(unittest.TestCase):
         grp_args = expected[:]
         c_args = ['blondie']
         for c in c_args: expected.append(conf.ADRESSES[c])
-        _check_recipients(expected, get_recipients(grps=['pals'],
-                                                   contacts=c_args))
+        self._check_recipients(expected, get_recipients(grps=['pals'],
+                                                        contacts=c_args))
         
     def test_get_group_plus_arbitrary(self):
         '''get_recipients(grps=[...], arbs=[...]'''
         expected = [conf.ADRESSES[c] for c in conf.GROUPS['work']]
         arb_args = ['test@unit.woo', 'captain.wienner@dom.co']
         expected += arb_args
-        _check_recipients(expected, get_recipients(grps=['work'],
-                                                   arbs=arb_args))
+        self._check_recipients(expected, get_recipients(grps=['work'],
+                                                        arbs=arb_args))
                                                                 
     def test_get_contacts_plus_arbitrary(self):
         '''get_recipients(contacts=[...], arbs=[...]'''
@@ -87,8 +88,8 @@ class TestRecipients(unittest.TestCase):
                     conf.ADRESSES['blondie']
         ]
         expected += arb_args
-        _check_recipients(expected, get_recipients(contacts=c_args,
-                                                   arbs=arb_args))
+        self._check_recipients(expected, get_recipients(contacts=c_args,
+                                                        arbs=arb_args))
         
     def test_get_all_opts(self):
         '''get_recipients(grups=[...], contacts=[...], arbs=[...])'''
@@ -98,20 +99,22 @@ class TestRecipients(unittest.TestCase):
         expected += [conf.ADRESSES[c] for c in c_args]
         arb_args = ['test@unit.woo', 'captain.wienner@dom.co']
         expected += arb_args
-        _check_recipients(expected, get_recipients(grps=grp_args,
-                                                   contacts=c_args,
-                                                   arbs=arb_args))
+        self._check_recipients(expected, get_recipients(grps=grp_args,
+                                                        contacts=c_args,
+                                                        arbs=arb_args))
                                                         
     def test_no_duplicates(self):
         '''get_recipients() should return no duplicates'''
         expected = ['test@test.net']
-        _check_recipients(expected, get_recipients(arbs=['test@test.net',
+        self._check_recipients(expected, 
+                               get_recipients(arbs=['test@test.net',
                                                     'test@test.net',
                                                     'test@test.net'])
         )
         expected = ['bob@bob.com']
-        _check_recipients(expected, get_recipients(contacts=['bob', 'bob',
-                                                   'bob', 'bob'])
+        self._check_recipients(expected, 
+                               get_recipients(contacts=['bob', 'bob',
+                                                        'bob', 'bob'])
         )
         
     # bad input
