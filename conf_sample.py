@@ -47,8 +47,13 @@ MAIL_TMPLS = dict(
     )
 )
 
-quiet = False
-verbose = False
+### Flags ###
+#############
+
+quiet     = False
+verbose   = False
+recursive = False
+dummy     = False
 
 ### Conf checking ###
 #####################
@@ -57,7 +62,7 @@ class ConfigError(AssertionError): pass
 
 def check_config():
     ''' '''
-    # All names in a group should be defined in the ADRESSES dict 
+    # All names in a group should be defined in the CONTACT dict 
     # constant.
     for group, c_list in GROUPS.items():
         for contact in c_list:
