@@ -9,7 +9,7 @@ MAIL_PSWRD = ""
 MAX_FILE_SIZE = "???"
 SIZE_WARN     = "???"
 
-ADRESSES = dict(
+CONTACTS = dict(
     bob     = "bob@bob.com",
     marylou = "hello@zerg.net",
     elvis   = "one4themon3y@pelvis.org",
@@ -61,7 +61,7 @@ def check_config():
     # constant.
     for group, c_list in GROUPS.items():
         for contact in c_list:
-            if not contact in ADRESSES:
+            if not contact in CONTACTS:
                 raise ConfigError
     # ...
     

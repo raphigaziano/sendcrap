@@ -113,7 +113,7 @@ m_opts.add_argument('-g', '--groups', metavar='GRP', nargs='*',
 h = ('Adds the given contacts to the list of recipients.\nCONT must be '
      'defined in the configuration file.')
 m_opts.add_argument('-c', '--contacts', metavar='CONT', nargs='*',
-                    default=[], choices=[c for c in conf.ADRESSES.keys()],
+                    default=[], choices=[c for c in conf.CONTACTS.keys()],
                     help=h)
 h = ('Adds the given list of arbitrary mail addresses to the list of \n'
      'recipients.')

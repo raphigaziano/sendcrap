@@ -10,6 +10,7 @@ except ImportError: # py3
     try : from io import cStringIO as StringIO
     except ImportError: from io import StringIO
 import unittest
+import imp
 from sendcrap.args import _parser as parser, process_args
 #~ from sendcrap.args import InvalidArgumentsException
 # Replacing args conf with the dummy sample config file
@@ -18,20 +19,54 @@ import conf_sample as conf
 args.conf = conf
 
 def _args(args):
-    '''Common helper for the individual tests'''
+    '''Common helper for the individual tests - parse the given args'''
     return parser.parse_args(args.split())
 
+def _pargs(args):
+    '''Common helper for the individual tests - process the given args'''
+    return process_args(_args(args))
+
+# A lot of the process_args functionnality comes from its use of
+# args._list_files & args._get_recipients and won't be tested here.
+# See test_file_list.py & test_recipients.py for tests related to these
+# two functions.
 class TestArgParser(unittest.TestCase):
     '''Command line processing tests'''
+    def tearDown(self): 
+        self.flist = []
+        self.mlist = []
+        imp.reload(conf)
+        
+    def _p(self, args):
+        self.flist, self.mlist = _pargs(args)
+    
+    #~ def test_no_input(self): self.fail()
+    #~ def test_no_file_input(self): self.fail()
+    
+    def test_no_mail_input(self):
+        '''process_args should return an empty mail list if not given any contact opts'''
+        for args in ('', ): # MOAR INPUT
+            self._p(args)
+            self.assertTrue(len(self.mlist) == 0)
+    
+    def test_mlist_len_grps(self):
+        '''process_args should return the right number of mail adresses for a given group'''
+        for grp in conf.GROUPS:
+            self._p('-g %s' % grp)
+            self.assertTrue(len(self.mlist) == len(conf.GROUPS))
+
+    def test_mlist_len_contacts(self):
+        '''process_args should return the right number of mail adresses for a given group'''
+        self._p('-c %s' % " ".join([c for c in conf.CONTACTS]))
+        self.assertTrue(len(self.mlist) == len(conf.CONTACTS))
+
+    # flags set
+
+class TestArgParserInput(unittest.TestCase):
+    '''Error handling related to received arguments'''
     def setUp(self):
         self.buffer_ = StringIO()
-    
-    def tearDown(self): pass
-    
-    # def test_...
 
-class TestArgParserInput(TestArgParser):
-    '''Error handling related to received arguments'''
     def _assertSysExit(self, f, *args, **kwargs):
         '''
         Common helper.

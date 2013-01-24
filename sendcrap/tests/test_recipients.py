@@ -30,7 +30,7 @@ class TestRecipients(unittest.TestCase):
     def test_get_group(self):
         '''get_recipients([grp]) should return the requested group's adresses as a list'''
         for grp, c_list in conf.GROUPS.items():
-            expected = [conf.ADRESSES[c] for c in c_list]
+            expected = [conf.CONTACTS[c] for c in c_list]
             self._check_recipients(expected, get_recipients([grp]))
     
     def test_get_multiple_groups(self):
@@ -39,14 +39,14 @@ class TestRecipients(unittest.TestCase):
         expected = []
         for grp, c_list in conf.GROUPS.items():
             inp.append(grp)
-            expected += [conf.ADRESSES[c] for c in c_list]
+            expected += [conf.CONTACTS[c] for c in c_list]
         expected = list(set(expected))
         self._check_recipients(expected, get_recipients(inp))
 
     def test_get_contacts(self):
         '''get_recipients(contacts=[...]) should return the requested contacts' adresses'''
-        contacts = conf.ADRESSES.keys()
-        expected = conf.ADRESSES.values()
+        contacts = conf.CONTACTS.keys()
+        expected = conf.CONTACTS.values()
         self._check_recipients(expected, 
                                get_recipients(contacts=contacts))
         contacts = list(contacts)[:1] + list(contacts)[-1:]
@@ -65,16 +65,16 @@ class TestRecipients(unittest.TestCase):
 
     def test_get_group_plus_contacts(self):
         '''get_recipients(grps=[...], contacts=[...]'''
-        expected = [conf.ADRESSES[c] for c in conf.GROUPS['pals']]
+        expected = [conf.CONTACTS[c] for c in conf.GROUPS['pals']]
         grp_args = expected[:]
         c_args = ['blondie']
-        for c in c_args: expected.append(conf.ADRESSES[c])
+        for c in c_args: expected.append(conf.CONTACTS[c])
         self._check_recipients(expected, get_recipients(grps=['pals'],
                                                         contacts=c_args))
         
     def test_get_group_plus_arbitrary(self):
         '''get_recipients(grps=[...], arbs=[...]'''
-        expected = [conf.ADRESSES[c] for c in conf.GROUPS['work']]
+        expected = [conf.CONTACTS[c] for c in conf.GROUPS['work']]
         arb_args = ['test@unit.woo', 'captain.wienner@dom.co']
         expected += arb_args
         self._check_recipients(expected, get_recipients(grps=['work'],
@@ -84,8 +84,8 @@ class TestRecipients(unittest.TestCase):
         '''get_recipients(contacts=[...], arbs=[...]'''
         c_args = ['marylou', 'vader', 'blondie']
         arb_args = ['test@unit.woo', 'captain.wienner@dom.co']
-        expected = [conf.ADRESSES['marylou'], conf.ADRESSES['vader'], 
-                    conf.ADRESSES['blondie']
+        expected = [conf.CONTACTS['marylou'], conf.CONTACTS['vader'], 
+                    conf.CONTACTS['blondie']
         ]
         expected += arb_args
         self._check_recipients(expected, get_recipients(contacts=c_args,
@@ -94,9 +94,9 @@ class TestRecipients(unittest.TestCase):
     def test_get_all_opts(self):
         '''get_recipients(grups=[...], contacts=[...], arbs=[...])'''
         grp_args = ['work']
-        expected = [conf.ADRESSES[c] for c in conf.GROUPS['work']]
+        expected = [conf.CONTACTS[c] for c in conf.GROUPS['work']]
         c_args = ['vader']
-        expected += [conf.ADRESSES[c] for c in c_args]
+        expected += [conf.CONTACTS[c] for c in c_args]
         arb_args = ['test@unit.woo', 'captain.wienner@dom.co']
         expected += arb_args
         self._check_recipients(expected, get_recipients(grps=grp_args,

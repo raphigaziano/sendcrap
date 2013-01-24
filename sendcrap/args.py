@@ -73,9 +73,9 @@ def _get_recipients(grps=None, contacts=None, arbs=None):
     all_recs = []
     for grp in grps:
         for contact in conf.GROUPS.get(grp, []):
-            all_recs.append(conf.ADRESSES[contact])
+            all_recs.append(conf.CONTACTS[contact])
     for contact in contacts:
-        all_recs.append(conf.ADRESSES[contact])
+        all_recs.append(conf.CONTACTS[contact])
     for a in arbs:
         all_recs.append(a)
     # Remove any duplicate
@@ -122,7 +122,7 @@ def process_args(args=None):
     if args is None: args = parse_args()
     files, mails = [], []
     import pprint
-    pprint.pprint(_list_files(args.dir, args.recursive,
-                              args.exts, args.files))
+    #~ pprint.pprint(_list_files(args.dir, args.recursive,
+                              #~ args.exts, args.files))
     
     return files, mails
