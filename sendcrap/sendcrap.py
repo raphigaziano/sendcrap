@@ -1,4 +1,14 @@
-from __future__ import print_function
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+"""
+sendcrap.py
+
+Program entry point.
+
+Author:  raphi <r.gaziano@gmail.com>
+Created: 19/01/2013
+Version: 1.0
+"""
 import sys
 # checking conf file on startup
 try:
