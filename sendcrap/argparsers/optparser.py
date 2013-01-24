@@ -13,4 +13,5 @@ Version: 1.0
 import optparse
 import conf
 
+parser = None
 #~ raise NotImplementedError

@@ -15,6 +15,8 @@ import os
 import argparse
 import conf
 
+__ALL__ = ['parser']
+
 ### Args Checkers ###
 #####################
 
