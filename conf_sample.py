@@ -10,7 +10,7 @@ MAX_FILE_SIZE = "???"
 SIZE_WARN     = "???"
 
 ADRESSES = dict(
-    bob     = "bob@bobby.com",
+    bob     = "bob@bob.com",
     marylou = "hello@zerg.net",
     elvis   = "one4themon3y@pelvis.org",
     vader   = "wildchild@sithlordz.gouv",
