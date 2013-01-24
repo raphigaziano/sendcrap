@@ -82,8 +82,6 @@ flags.add_argument('-r', '--recursive', action='store_true', help=h)
 h = ('dummy run: show what will be sent and to whom, but don\'t'
      ' actually do anything')
 flags.add_argument('-d', '--dummy', action='store_true', help=h)
-h = '???'
-flags.add_argument('-F', '--FFF', action='store_true', help=h)
 
 #-- files
 h = ('Select files to pack up and upload.\nIf none of these options are'
