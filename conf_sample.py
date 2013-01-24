@@ -7,9 +7,10 @@ MAIL_LOGIN = ""
 MAIL_PSWRD = ""
 
 MAX_FILE_SIZE = "???"
+SIZE_WARN     = "???"
 
 ADRESSES = dict(
-    bob     = "bob@bob.com",
+    bob     = "bob@bobby.com",
     marylou = "hello@zerg.net",
     elvis   = "one4themon3y@pelvis.org",
     vader   = "wildchild@sithlordz.gouv",
@@ -45,6 +46,9 @@ MAIL_TMPLS = dict(
         body   = "GNAAAAAAAAAAAANANZNZOIJ"
     )
 )
+
+quiet = False
+verbose = False
 
 ### Conf checking ###
 #####################
