@@ -7,7 +7,7 @@ Test the retrieving of a recipients list.
 import unittest
 from sendcrap.args import _get_recipients as get_recipients
 
-# Replacing utils conf with the dummy sample config file
+# Replacing args conf with the dummy sample config file
 from sendcrap import args
 import conf_sample as conf
 args.conf = conf
