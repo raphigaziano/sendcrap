@@ -45,7 +45,7 @@ class TestArgParser(unittest.TestCase):
     
     def test_no_mail_input(self):
         '''process_args should return an empty mail list if not given any contact opts'''
-        for args in ('', ): # MOAR INPUT
+        for args in ('', 'sendcrap/', '-e txt', '-r'):
             self._p(args)
             self.assertTrue(len(self.mlist) == 0)
     
@@ -53,14 +53,34 @@ class TestArgParser(unittest.TestCase):
         '''process_args should return the right number of mail adresses for a given group'''
         for grp in conf.GROUPS:
             self._p('-g %s' % grp)
-            self.assertTrue(len(self.mlist) == len(conf.GROUPS))
+            self.assertTrue(len(self.mlist) == len(conf.GROUPS[grp]))
 
     def test_mlist_len_contacts(self):
         '''process_args should return the right number of mail adresses for a given group'''
         self._p('-c %s' % " ".join([c for c in conf.CONTACTS]))
         self.assertTrue(len(self.mlist) == len(conf.CONTACTS))
 
-    # flags set
+    # flags setting
+    def test_flag_v(self):
+        '''process_args should set the verbose flag if opt is provided'''
+        self._p('-v')
+        self.assertTrue(conf.verbose)
+        
+    def test_flag_q(self):
+        '''process_args should set the quiet flag if opt is provided'''
+        self._p('-q')
+        self.assertTrue(conf.quiet)
+        
+    def test_flag_r(self):
+        '''process_args should set the recursive flag if opt is provided'''
+        self._p('-r')
+        self.assertTrue(conf.recursive)
+        
+    def test_flag_d(self):
+        '''process_args should set the dummy flag if opt is provided'''
+        self._p('-d')
+        self.assertTrue(conf.dummy)
+
 
 class TestArgParserInput(unittest.TestCase):
     '''Error handling related to received arguments'''

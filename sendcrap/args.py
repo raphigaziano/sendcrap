@@ -92,9 +92,7 @@ except ImportError:
     from .argparsers.optparser import parser as _parser
     
 def parse_args():
-    '''
-    DOC
-    '''
+    '''Convenience wrapper around the parser parse_args method.'''
     return _parser.parse_args()
     
 # This only support the argparse parser.
@@ -104,25 +102,27 @@ def parse_args():
 # This one should simply be cut and pasted into argparsers.argparser,
 # leaving arpasers.optparser.process_args to be defined.
 def process_args(args=None):
-    '''DOC
+    '''
+    Process the program's command line arguments and sets up all 
+    options. 
+    Side effect: the configuration file's flag variable will be modified
+    here.
     
-    @param args: Namespace or WHETAVAR __CLASS__ obj returned by parser.
+    @param args: Optional. Namespace object returned by the argument 
+                 parser.
+    @returns:    The list of files to pack and upload, and the list of
+                 contact to notify. Either list can be empty.
     '''
-    # Error checking: no real work has begun yet, so simply die rather 
-    # than throw exception.
-    ''' or, better(?):
-    ArgumentParser.exit(status=0, message=None)
-    This method terminates the program, exiting with the specified 
-    status and, if given, it prints a message before that.
-
-    ArgumentParser.error(message)
-    This method prints a usage message including the message to the 
-    standard error and terminates the program with a status code of 2.
-    '''
+    # Invalid arguments are handled by the parser itself.
     if args is None: args = parse_args()
-    files, mails = [], []
-    import pprint
-    #~ pprint.pprint(_list_files(args.dir, args.recursive,
-                              #~ args.exts, args.files))
+    # Flags
+    conf.verbose   = args.verbose
+    conf.quiet     = args.quiet
+    conf.recursive = args.recursive
+    conf.dummy     = args.dummy
+    
+    files = _list_files(args.dir, args.recursive, args.exts, args.files)
+    mails = _get_recipients(args.groups, args.contacts, args.addr)
     
     return files, mails
+    
