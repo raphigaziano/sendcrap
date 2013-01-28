@@ -105,13 +105,13 @@ def process_args(args=None):
     '''
     Process the program's command line arguments and sets up all 
     options. 
-    Side effect: the configuration file's flag variable will be modified
+    Side effect: the configuration file's flag variables will be modified
     here.
     
     @param args: Optional. Namespace object returned by the argument 
                  parser.
     @returns:    The list of files to pack and upload, and the list of
-                 contact to notify. Either list can be empty.
+                 contacts to notify. Either list can be empty.
     '''
     # Invalid arguments are handled by the parser itself.
     if args is None: args = parse_args()
