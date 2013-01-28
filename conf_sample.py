@@ -6,8 +6,8 @@ GOOGLE_PSWRD = ""
 MAIL_LOGIN = ""
 MAIL_PSWRD = ""
 
-MAX_FILE_SIZE = "???"
-SIZE_WARN     = "???"
+MAX_FILE_SIZE  = "???"
+FILE_SIZE_WARN = "???"
 
 CONTACTS = dict(
     bob     = "bob@bob.com",
