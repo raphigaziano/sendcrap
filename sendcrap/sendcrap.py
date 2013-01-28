@@ -18,12 +18,12 @@ except (SyntaxError, AssertionError) as e:
     print(str(e))
     sys.exit(1)
 
-from . import utils, args
+from . import utils, args, tar
 
 def main():
-    #~ opts = args.parse_args()
-    #~ f, m = args.process_args(opts)
-    f, m = args.process_args()
+    opts = args.parse_args()
+    f, m = args.process_args(opts)
+    #~ f, m = args.process_args()
     
     summary = 'uploading files:\n\t%s\nnotifying:\n\t%s' % (
         ",\n\t".join(f) if f else 'None', 
@@ -34,7 +34,12 @@ def main():
         return 0
     utils.verbose_output(summary)
     
-    
+    try:
+        tar.write(opts.dir, *f)
+    except: # User cancellation
+        pass
+        # + Errors
+        
     # Exit code, picked up by sys.exit
     return 0
     
