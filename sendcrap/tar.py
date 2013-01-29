@@ -14,6 +14,8 @@ import tarfile
 import conf
 from . import utils
 
+__ALL__ = ['get_size', 'check_size', 'write']
+
 def get_size(*files):
     '''Return the size in bytes of all the given files.'''
     size = 0
