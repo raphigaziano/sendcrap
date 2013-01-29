@@ -14,8 +14,24 @@ import tarfile
 import conf
 from . import utils
 
-def get_size(*files): pass
-def check_size(*files): pass
+def get_size(*files):
+    '''Return the size in bytes of all the given files.'''
+    size = 0
+    for f in files:
+        size += os.path.getsize(f)
+    return size
+    
+def check_size(max_=conf.SIZE_WARN, *files):
+    '''
+    Return True if the given files' size exceeds the conf.SIZE_WARN
+    constant.
+    Will return true if conf.SIZE_WARN is set to None, causing all 
+    checks to pass.
+    '''
+    if max_ is None: 
+        return True
+    s = get_size(*files)
+    return True if s < max_ else False
 
 # @TODO: try using shutils.make_archive
 def write(path, *files):
