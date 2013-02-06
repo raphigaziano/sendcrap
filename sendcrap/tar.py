@@ -9,6 +9,7 @@ Author:  raphi <r.gaziano@gmail.com>
 Created: 24/01/2013
 Version: 1.0
 """
+import sys
 import os
 import tarfile
 import conf
@@ -23,7 +24,7 @@ def get_size(*files):
         size += os.path.getsize(f)
     return size
     
-def check_size(max_=conf.SIZE_WARN, *files):
+def check_size(max_, *files):
     '''
     Return False if the given files' size exceeds the conf.SIZE_WARN
     constant.
@@ -34,6 +35,27 @@ def check_size(max_=conf.SIZE_WARN, *files):
         return True
     s = get_size(*files)
     return True if s < max_ else False
+
+def _size_warn():
+    '''
+    Prompt the user for cancellation.
+    Returns True to go on, False to abort.
+    '''
+    # Py2/Py3 Compatibility
+    if sys.version < '3':
+        input = raw_input
+        
+    prompt = input('The given file list exceeds %s bytes.\n'
+                   'Are you sure you want to upload that much data ? '
+                   % conf.FILE_SIZE_WARN).lower()
+    while True:
+        if prompt.startswith('y'):
+            return True
+        elif prompt.startswith('n'):
+            return False
+        else:
+            prompt = input('Please answer by y(es) or n(o) ').lower()
+        
 
 # @TODO: try using shutils.make_archive
 def write(path, *files):
@@ -52,7 +74,10 @@ def write(path, *files):
     dirname = os.path.basename(path)
     tarname = '%s.tar' % dirname
     tar_path = os.path.join(path, tarname)
-    # @TODO: check for size
+    # Warn user if file size is considered too big
+    if not check_size(conf.FILE_SIZE_WARN, *files) and not _size_warn():
+        utils.forced_output('Aborting')
+        sys.exit(0)
     utils.output('Creating archive %s...' % tarname) 
     # Using mode 'w:gz' adds gzip compression, but nests
     # the tar inside the zip.

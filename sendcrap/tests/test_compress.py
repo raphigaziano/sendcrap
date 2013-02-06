@@ -9,6 +9,11 @@ import os
 import tarfile
 from sendcrap.tar import write
 
+# Replacing tar conf with the dummy sample config file
+from sendcrap import tar
+import conf_sample as conf
+tar.conf = conf
+
 TEST_DATA_DIR = os.path.join("data", "test-data")
 TAR_PATH      = os.path.join(TEST_DATA_DIR, "test-data.tar")
 TEST_FILES    = [os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
