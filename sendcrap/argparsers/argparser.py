@@ -102,22 +102,29 @@ h = ('Filter selection based on the provided list of file extensions.\n'
 f_opts.add_argument('-e', '--exts', metavar='EXT', nargs='*',
                     default=[], action=CleanExt, help=h)
                     
-#-- mail
+#-- contacts
 h = ('Select recipients to notify of the file upload.')
-m_opts = parser.add_argument_group('contact selection', description=h)
+c_opts = parser.add_argument_group('contact selection', description=h)
 h = ('Adds all members of the given contact groups to the list of '
      'recipients.\nGRP must be defined in the configuration file')
-m_opts.add_argument('-g', '--groups', metavar='GRP', nargs='*',
+c_opts.add_argument('-g', '--groups', metavar='GRP', nargs='*',
                     default=[], choices=[g for g in conf.GROUPS.keys()],
                     help=h)
 h = ('Adds the given contacts to the list of recipients.\nCONT must be '
      'defined in the configuration file.')
-m_opts.add_argument('-c', '--contacts', metavar='CONT', nargs='*',
+c_opts.add_argument('-c', '--contacts', metavar='CONT', nargs='*',
                     default=[], choices=[c for c in conf.CONTACTS.keys()],
                     help=h)
 h = ('Adds the given list of arbitrary mail addresses to the list of \n'
      'recipients.')
-m_opts.add_argument('-a', '--addr', metavar='ADD', nargs='*',
+c_opts.add_argument('-a', '--addr', metavar='ADD', nargs='*',
                     default=[], help=h)
-# mail template (but later...)
+h = ('Use the given mail template. Will default to the value defined in '
+     'the configuration file')
+
+#-- mail
+m_opts = parser.add_argument_group('mail options')
+m_opts.add_argument('-t', '--template', default=conf.default_template,
+                    choices = [t for t in conf.MAIL_TMPLS.keys()],
+                    metavar='template', help=h)
 
