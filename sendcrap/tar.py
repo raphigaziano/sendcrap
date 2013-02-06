@@ -3,7 +3,7 @@
 """
 tar.py
 
-BLAAA
+tar archive builder.
 
 Author:  raphi <r.gaziano@gmail.com>
 Created: 24/01/2013
