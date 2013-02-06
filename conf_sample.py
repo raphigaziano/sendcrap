@@ -7,7 +7,7 @@ MAIL_LOGIN = ""
 MAIL_PSWRD = ""
 
 MAX_FILE_SIZE  = "???"
-FILE_SIZE_WARN = "???"
+FILE_SIZE_WARN = "???"  # None if no max
 
 CONTACTS = dict(
     bob     = "bob@bob.com",

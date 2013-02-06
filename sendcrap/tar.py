@@ -25,7 +25,7 @@ def get_size(*files):
     
 def check_size(max_=conf.SIZE_WARN, *files):
     '''
-    Return True if the given files' size exceeds the conf.SIZE_WARN
+    Return False if the given files' size exceeds the conf.SIZE_WARN
     constant.
     Will return true if conf.SIZE_WARN is set to None, causing all 
     checks to pass.
