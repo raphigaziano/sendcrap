@@ -18,6 +18,7 @@ except ImportError:
 # Py2/Py3 Compatibility
 if sys.version < '3':
     input = raw_input
+else: input = input
     
 __ALL__ = ['output', 
            'verbose_output', 
