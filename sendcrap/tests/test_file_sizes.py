@@ -13,8 +13,8 @@ TEST_FILES    = [os.path.join(TEST_DATA_DIR, 'randomcrap.txt'),
                  os.path.join(TEST_DATA_DIR, 'subdir', 
                     'wagonrythm.mp3')]
 
-TEST_SINGLE_SIZE = 1010624L # Size (in bytes) of wagonrythm.mp3
-TEST_MULTIPLE_SIZE = 1085283L
+TEST_SINGLE_SIZE = 1010624 # Size (in bytes) of wagonrythm.mp3
+TEST_MULTIPLE_SIZE = 1085283
 TEST_MAX_SIZE = TEST_SINGLE_SIZE + TEST_MULTIPLE_SIZE 
 
 from sendcrap.utils import get_size, check_size
