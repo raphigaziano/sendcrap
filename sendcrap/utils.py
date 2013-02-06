@@ -9,14 +9,24 @@ Author:  raphi <r.gaziano@gmail.com>
 Created: 24/01/2013
 Version: 1.0
 """
-import sys, logging
+import os, sys, logging
 try: 
     import conf
 except ImportError:
     # Dummy conf object for testing
     conf = type('conf', (object,), dict(quiet=False, verbose=False))
+# Py2/Py3 Compatibility
+if sys.version < '3':
+    input = raw_input
     
-__ALL__ = ['output', 'verbose_output', 'forced_output']
+__ALL__ = ['output', 
+           'verbose_output', 
+           'forced_output',
+           'yes_no_prompt',
+           'get_size',
+           'check_size',
+           'check_size_warn'
+]
 
 ### Output handling ###
 #######################
@@ -119,6 +129,57 @@ def forced_output(msg):
     message
     '''
     return _output(msg)
+
+### User Interaction ###
+########################
+
+def yes_no_prompt(msg):
+    '''
+    Prompt the user with a yes/no question.
+    Returns True for yes, False for no.
+    '''        
+    prompt = input(msg).lower()
+    while True:
+        if prompt.startswith('y'):
+            return True
+        elif prompt.startswith('n'):
+            return False
+        else:
+            prompt = input('Please answer by y(es) or n(o) ').lower()
+
+    
+### File(s) Size Utils ###
+##########################
+    
+def get_size(*files):
+    '''Return the size in bytes of all the given files.'''
+    size = 0
+    for f in files:
+        size += os.path.getsize(f)
+    return size
+    
+def check_size(max_, *files):
+    '''
+    Return False if the given files' size exceeds the conf.SIZE_WARN
+    constant.
+    Will return true if conf.SIZE_WARN is set to None, causing all 
+    checks to pass.
+    '''
+    if max_ is None: 
+        return True
+    s = get_size(*files)
+    return True if s < max_ else False
+
+def check_size_warn(max_, *files):
+    '''
+    Checks the given files's list size and prompt the user for
+    cancelation if size is too big.
+    '''
+    if check_size(max_, *files): return True
+    return yes_no_prompt(
+        'The given file list exceeds %s bytes.\n'
+        'Are you sure you want to upload that much data ? '
+        % conf.FILE_SIZE_WARN)
     
 
 if __name__ == '__main__':

@@ -53,35 +53,6 @@ class TestCompress(unittest.TestCase):
             self.assertTrue(all([f in TEST_FILES for f in tf_contents]))
             self.assertTrue(all([f in tf_contents for f in TEST_FILES]))
 
-
-TEST_SINGLE_SIZE = 1010624L # Size (in bytes) of wagonrythm.mp3
-TEST_MULTIPLE_SIZE = 1085283L
-TEST_MAX_SIZE = TEST_SINGLE_SIZE + TEST_MULTIPLE_SIZE 
-
-from sendcrap.tar import get_size, check_size
-        
-class TestFileSizeChecks(unittest.TestCase):
-    '''File size checking tests'''
-    def setUp(self): pass        
-    def tearDown(self): pass
-    
-    def test_get_file_size(self):
-        '''tar.get_size() should return an accurate file size'''
-        self.assertTrue(get_size(TEST_FILES[2]), TEST_SINGLE_SIZE)
-        
-    def test_get_file_size_multiple(self):
-        '''tar.get_size() should return an accurate size when given multiple files'''
-        self.assertTrue(get_size(*TEST_FILES), TEST_MULTIPLE_SIZE)
-    
-    def test_check_size(self):
-        '''tar.check_size, single file'''
-        self.assertTrue(check_size(TEST_MAX_SIZE, TEST_FILES[2]))
-        self.assertFalse(check_size(666, TEST_FILES[2]))
-        
-    def test_check_size_multiple(self):
-        '''tar.check_size, multiple files'''
-        self.assertTrue(check_size(TEST_MAX_SIZE, TEST_FILES[2]))
-        self.assertFalse(check_size(TEST_SINGLE_SIZE, *TEST_FILES))
         
 def suite():
     suite = unittest.TestSuite()
