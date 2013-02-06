@@ -7,8 +7,8 @@ MAIL_LOGIN = ""
 MAIL_PSWRD = ""
 
 # The following sizes should be given in bytes
-MAX_FILE_SIZE  = "???"
-FILE_SIZE_WARN = None  # None if no max
+ATTACHMENT_MAX_SIZE = "???"
+FILE_SIZE_WARN      = None # None if no max
 
 CONTACTS = dict(
     bob     = "bob@bob.com",
@@ -48,6 +48,8 @@ MAIL_TMPLS = dict(
     )
 )
 
+default_template = None
+
 ### Flags ###
 #############
 
@@ -69,6 +71,10 @@ def check_config():
         for contact in c_list:
             if not contact in CONTACTS:
                 raise ConfigError
+    # If set, default_template should be defined in the MAIL_TMPLS dict
+    if default_template is not None:
+        if default_template not in MAIL_TMPLS.keys():
+            raise ConfigError
     # ...
     
 check_config()

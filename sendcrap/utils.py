@@ -146,7 +146,6 @@ def yes_no_prompt(msg):
             return False
         else:
             prompt = input('Please answer by y(es) or n(o) ').lower()
-
     
 ### File(s) Size Utils ###
 ##########################
