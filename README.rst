@@ -56,4 +56,10 @@ Compatibility notes:
   (current plan of providing an alternative optparse implementation
   feels like stoopid overengineering, and there's already enough of it).
   
+  UPDATE: after testing, installing the argparse module manually works ok
+  with 2.6, despite a small difference with the standard version, causing
+  one test to fail:
+  mutually explusive flags don't seem to work, and sending both the
+  -v and -q flags do not crash the app as expected.
+  
 - tarfile module seems to also cause problems with 2.6.
