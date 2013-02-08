@@ -45,5 +45,14 @@ def write(path, *files):
     with tarfile.open(tar_path, 'w') as tf:
         for f in files:
             utils.verbose_output("Adding %s to %s..." % (f, tarname))
-            tf.add(f)
+            try:
+                tf.add(f)
+            # ???
+            # If given a single list for *files, windows will raise
+            # a TypeError, while linux will raise an AttributeError ???
+            # Quickfix: Simply catch AttributeError and raise TypeError
+            # Instead.
+            except AttributeError: raise TypeError("files should be "
+                "a variable number of arguments, not a single list. Use "
+                "*filelist to explode an already computed list.")
     return tar_path
