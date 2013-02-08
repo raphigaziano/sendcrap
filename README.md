@@ -29,3 +29,31 @@ compatible with py3.2, but I'll bother when the basic thing is done.
 Also, i'm planning on using the clint library, because it's got an 
 awesome name, so that'll be at least one dependency. We'll see about 
 others later.
+
+
+Compatibility notes:
+====================
+
+- The linux argparse module for python 3.2 seems to have an import bug
+  that is causing one of the parser tests to fail.
+  The quick and dirty fix involves hacking the argparse file directly:
+  Line 93, replace the line 
+  
+  ::
+  
+    from gettext import gettext
+
+  with
+  
+  ::
+    
+    from gettext import gettext, ngettext
+    
+  This problem does not occur on windows.
+  
+- Argument parsing for py2.6:
+  I'll probably just make the backported argparse module a requirement
+  (current plan of providing an alternative optparse implementation
+  feels like stoopid overengineering, and there's already enough of it).
+  
+- tarfile module seems to also cause problems with 2.6.
