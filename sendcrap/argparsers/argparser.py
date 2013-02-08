@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 """
-optparser.py
+argparser.py
 
 Definition of an argparse parser.
 This is the parser that will be used by default - We'll fall back to
