@@ -7,8 +7,9 @@ MAIL_LOGIN = ""
 MAIL_PSWRD = ""
 
 # The following sizes should be given in bytes
-ATTACHMENT_MAX_SIZE = "???"
-FILE_SIZE_WARN      = None # None if no max
+# Use None if no max
+ATTACHMENT_MAX_SIZE = 1024 * 1024 * 20  # 20 Mbs
+FILE_SIZE_WARN      = 1024 * 1024 * 200 # 200 Mbs
 
 CONTACTS = dict(
     bob     = "bob@bob.com",
