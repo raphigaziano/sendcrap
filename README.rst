@@ -32,7 +32,7 @@ others later.
 
 
 Compatibility notes:
-====================
+--------------------
 
 - The linux argparse module for python 3.2 seems to have an import bug
   that is causing one of the parser tests to fail.
