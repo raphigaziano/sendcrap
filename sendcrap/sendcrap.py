@@ -18,27 +18,34 @@ except (SyntaxError, AssertionError) as e:
     print(str(e))
     sys.exit(1)
 
-from . import utils, args, tar
+from . import utils, args, tar, mail
 
 def main():
     opts = args.parse_args()
     f, m = args.process_args(opts)
     #~ f, m = args.process_args()
     
-    summary = 'uploading files:\n\t%s\nnotifying:\n\t%s' % (
-        ",\n\t".join(f) if f else 'None', 
-        ",\n\t".join(m) if m else 'None'
-    )
     if conf.dummy: 
+        summary = 'uploading files:\n\t%s\nnotifying:\n\t%s' % (
+            ",\n\t".join(f) if f else 'None', 
+            ",\n\t".join(m) if m else 'None'
+        )
         utils.forced_output(summary)
         return 0
-    utils.verbose_output(summary)
     
     try:
         tar.write(opts.dir, *f)
-    except: # User cancellation
-        pass
+    except SystemExit: # User cancelled
+        return 0
         # + Errors
+    
+    template = mail.get_template(opts.template)
+    print template # DUM DUMMY
+    
+    #~ if rartoobig:
+        #~ upload_rar
+    #~ 
+    #~ send_mail(template, opt tar_path?)
         
     # Exit code, picked up by sys.exit
     return 0
