@@ -52,7 +52,5 @@ def write(path, *files):
             # a TypeError, while linux will raise an AttributeError ???
             # Quickfix: Simply catch AttributeError and raise TypeError
             # Instead.
-            except AttributeError: raise TypeError("files should be "
-                "a variable number of arguments, not a single list. Use "
-                "*filelist to explode an already computed list.")
+            except AttributeError as e: raise TypeError(str(e))
     return tar_path
