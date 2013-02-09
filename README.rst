@@ -32,7 +32,7 @@ others later.
 
 
 Compatibility notes:
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 - The linux argparse module for python 3.2 seems to have an import bug
   that is causing one of the parser tests to fail.
@@ -52,7 +52,7 @@ Compatibility notes:
   
   Installing the backported version manually works ok, despite a small 
   difference with the standard version, causing one test to fail:
-  mutually explusive flags don't seem to work, and sending both the
+  mutually exclusive flags don't seem to work, and sending both the
   -v and -q flags do not crash the app as expected.
   
 - tarfile objects do not support context managers with 2.6.
