@@ -24,9 +24,6 @@ def get_template(tmpl):
     '''
     default  = conf.MAIL_TMPLS.get(conf.default_template, None)
     return conf.MAIL_TMPLS.get(tmpl, default) or type_mail()
-    
-    
-def attach_or_upload(): pass # ??? in utils ?
 
 def type_mail(_print_header_help=True): 
     '''
