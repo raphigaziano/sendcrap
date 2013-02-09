@@ -37,15 +37,11 @@ Compatibility notes:
 - The linux argparse module for python 3.2 seems to have an import bug
   that is causing one of the parser tests to fail.
   The quick and dirty fix involves hacking the argparse file directly:
-  Line 93, replace the line 
-  
-  ::
+  Line 93, replace the line ::
   
     from gettext import gettext
 
-  with
-  
-  ::
+  with::
     
     from gettext import gettext, ngettext
     
