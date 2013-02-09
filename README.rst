@@ -51,15 +51,12 @@ Compatibility notes:
     
   This problem does not occur on windows.
   
-- Argument parsing for py2.6:
-  I'll probably just make the backported argparse module a requirement
-  (current plan of providing an alternative optparse implementation
-  feels like stoopid overengineering, and there's already enough of it).
-  
-  UPDATE: after testing, installing the argparse module manually works ok
-  with 2.6, despite a small difference with the standard version, causing
-  one test to fail:
+- Argument parsing requires the argparse module, which thus becomes an
+  additional dependency for py 2.6.
+  Installing the backported version manually works ok, despite a small 
+  difference with the standard version, causing one test to fail:
   mutually explusive flags don't seem to work, and sending both the
   -v and -q flags do not crash the app as expected.
   
-- tarfile module seems to also cause problems with 2.6.
+- tarfile objects do not support context managers with 2.6.
+  This will be fixed soon.
