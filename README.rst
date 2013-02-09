@@ -53,6 +53,7 @@ Compatibility notes:
   
 - Argument parsing requires the argparse module, which thus becomes an
   additional dependency for py 2.6.
+  
   Installing the backported version manually works ok, despite a small 
   difference with the standard version, causing one test to fail:
   mutually explusive flags don't seem to work, and sending both the
