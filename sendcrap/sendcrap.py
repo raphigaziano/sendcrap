@@ -10,15 +10,14 @@ Created: 19/01/2013
 Version: 1.0
 """
 import sys
+from . import utils, args, tar, mail
 # checking conf file on startup
 try:
     import conf
 except (SyntaxError, AssertionError) as e:
-    print("Conf Error!")
-    print(str(e))
+    utils.forced_output("Conf Error!")
+    utils.forced_output(str(e))
     sys.exit(1)
-
-from . import utils, args, tar, mail
 
 def main():
     opts = args.parse_args()
