@@ -5,6 +5,10 @@ GOOGLE_PSWRD = ""
 
 MAIL_LOGIN = ""
 MAIL_PSWRD = ""
+SMTP_SERVR = ""
+SMTP_PORT  = 0
+
+SENDER_EMAIL = ""
 
 # The following sizes should be given in bytes
 # Use None if no max
