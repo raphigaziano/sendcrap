@@ -79,7 +79,7 @@ class TestTypeMail(unittest.TestCase):
             
     def test_body(self):
         '''mail.type_mail should return a well formed dict when given valid input'''
-        expected = {'header': 'testtest', 'body': 'pimpampoom'}
+        expected = {'header': 'testtest', 'body': 'pimpampoom\n'}
         vals = [
             '%s\n' % expected['header'], 
             '%s\n' % expected['body']
@@ -89,7 +89,7 @@ class TestTypeMail(unittest.TestCase):
         
     def test_body_with_endlines(self):
         '''mail.type_mail should ignore explicit line feeds'''
-        expected = {'header': 'testtest', 'body': 'pimpampoom\\npampampam'}
+        expected = {'header': 'testtest', 'body': 'pimpampoom\\npampampam\n'}
         vals = [
             '%s\n' % expected['header'], 
             '%s\n' % expected['body']

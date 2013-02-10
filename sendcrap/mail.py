@@ -54,8 +54,14 @@ def type_mail(_print_header_help=True):
         return conf.MAIL_TMPLS[header]
     
     utils.forced_output('quick help aboot body (explicit \\n!)')
-    body = utils.input('body: ')
-    return {'header': header, 'body': body}
+    body = []
+    while True:
+        if not body: prompt = 'body: '
+        else:        prompt = ' >>>  '
+        line = utils.input(prompt)
+        body.append(line)
+        if not line: break
+    return {'header': header, 'body': "\n".join(body)}
     
 def gen_mail(tmpl): pass 
 def send_mail(*dummyargs): pass
