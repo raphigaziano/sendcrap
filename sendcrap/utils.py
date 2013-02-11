@@ -180,7 +180,60 @@ def check_size_warn(max_, *files):
         'The given file list exceeds %s bytes.\n'
         'Are you sure you want to upload that much data ? '
         % conf.FILE_SIZE_WARN)
+        
+### Path Checkers ###
+######################
     
+try:
+    import httplib
+except ImportError: # py3
+    from http import client as httplib
+try:
+    import urlparse
+except ImportError:
+    from urllib import parse as urlparse
+
+# Adapted from
+# http://code.activestate.com/recipes/286225-httpexists-find-out-whether-an-http-reference-is-v/
+def valid_http_url(url):
+    """
+    A quick and dirty way to to check whether a web file is there.
+
+    Usage:
+    >>> conf.quiet = False
+    >>> valid_http_url('http://www.python.org/')
+    True
+    >>> valid_http_url('http://www.python.org/PenguinOnTheTelly')
+    Status 404 Not Found : http://www.python.org/PenguinOnTheTelly
+    False
+    """
+    host, path = urlparse.urlsplit(url)[1:3]
+    found = False
+    try:
+        connection = httplib.HTTPConnection(host)  ## Make HTTPConnection Object
+        connection.request("HEAD", path)
+        responseOb = connection.getresponse()      ## Grab HTTPResponse Object
+
+        if responseOb.status == 200:
+            found = True
+        else:
+            output("Status %d %s : %s" % (responseOb.status, 
+                                          responseOb.reason, url))
+    except Exception as e:
+        output(e.__class__,  e, url)
+    return found
+    
+def valid_local_path(path):
+    '''
+    Checks whether a local file path is valid.
+    
+    >>> dir_ = os.path.dirname(__file__)
+    >>> valid_local_path(os.path.join(dir_, 'utils.py'))
+    True
+    >>> valid_local_path(os.path.join(dir_, 'onoes.po'))
+    False
+    '''
+    return os.path.isfile(path)
 
 if __name__ == '__main__':
     import doctest
