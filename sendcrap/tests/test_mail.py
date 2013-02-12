@@ -16,6 +16,24 @@ mail.conf = conf
 URL  = 'http://www.python.org'
 PATH = os.path.dirname(__file__)
 
+TMPL_BASE  = {"header": "testemail"}
+RECIPIENTS = ['test@test.com', 'another@test.com']
+
+def gen_template(body):
+    '''Helper. Generate a template with the passed body text'''
+    tmpl = TMPL_BASE
+    tmpl['body'] = body
+    return tmpl
+    
+# from:
+# http://stackoverflow.com/questions/7519964/python-pull-back-plain-text-body-from-message-from-imap-account
+def get_mail_body(message):
+    '''Helper. Extract the body from a Message objet'''
+    for part in message.walk():       
+        if part.get_content_type() == "text/plain":
+            return part.get_payload(decode=True)
+
+
 class TestTemplates(unittest.TestCase):
     '''Template retrieval Tests'''
     def setUp(self): pass
@@ -38,12 +56,19 @@ class TestTemplates(unittest.TestCase):
         mail.type_mail = lambda: 'dummytyping'
         self.assertEqual(get_template(None), 'dummytyping')
         mail.type_mail = base_type_mail
+    
+    # Email generation #
+
+    # ...
         
     # Template processing #
     
     def test_templ_no_tag(self):
         '''mail.gen_mail with url => template not containing any url tag'''
-        self.fail()
+        tmpl = gen_template('testtesttesttest')
+        m = gen_mail(tmpl, RECIPIENTS, '')
+        self.assertEqual(get_mail_body(m), 'testtesttesttest')
+        
     
     
 if sys.version < '3':
