@@ -4,14 +4,17 @@
 Mail test file.
 Test the mail generation and sending features.
 """
-import sys
+import os, sys
 import unittest
-from sendcrap.mail import get_template
+from sendcrap.mail import get_template, gen_mail
 
 # Replacing mail conf with the dummy sample config file
 from sendcrap import mail
 import conf_sample as conf
 mail.conf = conf
+
+URL  = 'http://www.python.org'
+PATH = os.path.dirname(__file__)
 
 class TestTemplates(unittest.TestCase):
     '''Template retrieval Tests'''
@@ -35,6 +38,12 @@ class TestTemplates(unittest.TestCase):
         mail.type_mail = lambda: 'dummytyping'
         self.assertEqual(get_template(None), 'dummytyping')
         mail.type_mail = base_type_mail
+        
+    # Template processing #
+    
+    def test_templ_no_tag(self):
+        '''mail.gen_mail with url => template not containing any url tag'''
+        self.fail()
     
     
 if sys.version < '3':
@@ -89,7 +98,7 @@ class TestTypeMail(unittest.TestCase):
         
     def test_body_with_endlines(self):
         '''mail.type_mail should ignore explicit line feeds'''
-        expected = {'header': 'testtest', 'body': 'pimpampoom\\npampampam\n'}
+        expected = {'header': 'testtest', 'body': 'pimpampoom\npampampam\n'}
         vals = [
             '%s\n' % expected['header'], 
             '%s\n' % expected['body']
