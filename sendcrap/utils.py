@@ -26,7 +26,9 @@ __ALL__ = ['output',
            'yes_no_prompt',
            'get_size',
            'check_size',
-           'check_size_warn'
+           'check_size_warn',
+           'valid_http_url',
+           'valid_local_path'
 ]
 
 ### Output handling ###
@@ -220,7 +222,7 @@ def valid_http_url(url):
             output("Status %d %s : %s" % (responseOb.status, 
                                           responseOb.reason, url))
     except Exception as e:
-        output(e.__class__,  e, url)
+        output("\n".join([str(e.__class__),  str(e), url]))
     return found
     
 def valid_local_path(path):
@@ -234,6 +236,7 @@ def valid_local_path(path):
     False
     '''
     return os.path.isfile(path)
+
 
 if __name__ == '__main__':
     import doctest
