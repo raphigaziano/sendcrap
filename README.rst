@@ -57,3 +57,12 @@ Compatibility notes:
   
 - tarfile objects do not support context managers with 2.6.
   This will be fixed soon.
+  
+TODO:
+-----
+
+- Allow "naming" links in templates, ie providing an display text.
+  I'll probably do that with a function-like tag:
+  url() will produce <a href=url ...>url</a>
+  while
+  url(name) will produce <a href=url ...>name</a>
