@@ -71,7 +71,24 @@ class TestTemplates(unittest.TestCase):
     
     # Email generation #
 
-    # ...
+    def test_recipients(self):
+        '''mail.gen_mail should return a Message object with the right recipient list'''
+        m = gen_mail(gen_template('dummy'), RECIPIENTS, PATH)
+        self.assertEqual(m['To'], ", ".join(RECIPIENTS))
+        # single recipient
+        m = gen_mail(gen_template('dummy'), ['bob@bob.com'], PATH)
+        self.assertEqual(m['To'], 'bob@bob.com')
+        
+    def test_sender(self):
+        '''mail.gen_mail should return a Message object with the right From field (depending on conf)'''
+        m = gen_mail(gen_template('dummy'), RECIPIENTS, PATH)
+        self.assertEqual(m['From'], conf.SENDER_EMAIL)
+        
+    def test_subject(self):
+        '''mail.gen_mail should set the right subject (from chosen template)'''
+        t = gen_template('dumdummy')
+        m = gen_mail(t, RECIPIENTS, PATH)
+        self.assertEqual(m['Subject'], t['header'])
         
     # Template processing #
     
