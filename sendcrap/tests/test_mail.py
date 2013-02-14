@@ -32,13 +32,19 @@ def get_mail_plain_body(message):
     '''Helper. Extract the body from a Message objet'''
     for part in message.walk():       
         if part.get_content_type() == "text/plain":
-            return str(part.get_payload(decode=True), 'utf8')
+            try:
+                return str(part.get_payload(decode=True), 'utf8')
+            except TypeError:
+                return part.get_payload(decode=True)
 
 def get_mail_html_body(message):
     '''Helper. Extract the html body from a Message objet'''
     for part in message.walk():       
         if part.get_content_type() == "text/html":
-            return str(part.get_payload(decode=True), 'utf8')
+            try:
+                return str(part.get_payload(decode=True), 'utf8')
+            except TypeError:
+                return part.get_payload(decode=True)
 
 class TestTemplates(unittest.TestCase):
     '''Template retrieval Tests'''
