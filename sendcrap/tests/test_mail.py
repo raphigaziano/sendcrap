@@ -33,7 +33,7 @@ def get_mail_plain_body(message):
     for part in message.walk():       
         if part.get_content_type() == "text/plain":
             try:
-                return str(part.get_payload(decode=True), 'utf8')
+                return str(part.get_payload(decode=True), 'utf8') # py3
             except TypeError:
                 return part.get_payload(decode=True)
 
@@ -42,7 +42,7 @@ def get_mail_html_body(message):
     for part in message.walk():       
         if part.get_content_type() == "text/html":
             try:
-                return str(part.get_payload(decode=True), 'utf8')
+                return str(part.get_payload(decode=True), 'utf8') # py3
             except TypeError:
                 return part.get_payload(decode=True)
 
@@ -89,6 +89,11 @@ class TestTemplates(unittest.TestCase):
         t = gen_template('dumdummy')
         m = gen_mail(t, RECIPIENTS, PATH)
         self.assertEqual(m['Subject'], t['header'])
+        
+    def test_content_type(self):
+        '''mail.gen_mail should return a Message object with the right content-type'''
+        m = gen_mail(gen_template('dummy'), RECIPIENTS, PATH)
+        self.assertEqual(m['Content-Type'], 'multipart/alternative')
         
     # Template processing #
     
