@@ -140,9 +140,9 @@ class SMTPSender(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # Tempo:
-        print exc_type
-        print exc_val
-        print exc_tb
+        utils.forced_output(exc_type)
+        utils.forced_output(exc_val)
+        utils.forced_output(exc_tb)
         
         self.smtp.close()
         return True # Prevent exception propagation

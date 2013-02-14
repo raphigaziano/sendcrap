@@ -14,7 +14,8 @@ import conf_sample as conf
 mail.conf = conf
 
 URL  = 'http://www.python.org'
-PATH = os.path.dirname(__file__)
+PATH = __file__
+HTML_URL = mail.HTML_URL_TMPL % (URL, URL)
 
 TMPL_BASE  = {"header": "testemail"}
 RECIPIENTS = ['test@test.com', 'another@test.com']
@@ -27,12 +28,17 @@ def gen_template(body):
     
 # from:
 # http://stackoverflow.com/questions/7519964/python-pull-back-plain-text-body-from-message-from-imap-account
-def get_mail_body(message):
+def get_mail_plain_body(message):
     '''Helper. Extract the body from a Message objet'''
     for part in message.walk():       
         if part.get_content_type() == "text/plain":
-            return part.get_payload(decode=True)
+            return str(part.get_payload(decode=True), 'utf8')
 
+def get_mail_html_body(message):
+    '''Helper. Extract the html body from a Message objet'''
+    for part in message.walk():       
+        if part.get_content_type() == "text/html":
+            return str(part.get_payload(decode=True), 'utf8')
 
 class TestTemplates(unittest.TestCase):
     '''Template retrieval Tests'''
@@ -63,13 +69,40 @@ class TestTemplates(unittest.TestCase):
         
     # Template processing #
     
-    def test_templ_no_tag(self):
-        '''mail.gen_mail with url => template not containing any url tag'''
+    def test_templ_no_tag_local_file(self):
+        '''mail.gen_mail with local file => template not containing any url tag'''
         tmpl = gen_template('testtesttesttest')
-        m = gen_mail(tmpl, RECIPIENTS, '')
-        self.assertEqual(get_mail_body(m), 'testtesttesttest')
-        
+        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        self.assertEqual(get_mail_plain_body(m), 'testtesttesttest')
+
+    def test_templ_tag_local_file(self):
+        '''mail.gen_mail with local file => template containing url tag to be stripped'''
+        tmpl = gen_template('testtest%stest')
+        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        self.assertEqual(get_mail_plain_body(m), 'testtesttest')
+        tmpl = gen_template('testtest\n%s\ntest')
+        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        self.assertEqual(get_mail_plain_body(m), 'testtesttest')
+        tmpl = gen_template('testtest%s\ntest')
+        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        self.assertEqual(get_mail_plain_body(m), 'testtesttest')
+        tmpl = gen_template('testtest\n%stest')
+        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        self.assertEqual(get_mail_plain_body(m), 'testtesttest')
+
+    def test_templ_no_tag_remote_file(self):
+        '''mail.gen_mail with url => no url tag '''
+        tmpl = gen_template('testtesttest')
+        m = gen_mail(tmpl, RECIPIENTS, URL)
+        self.assertEqual(get_mail_plain_body(m), 'testtesttest\n%s' % URL)
+        self.assertEqual(get_mail_html_body(m), 'testtesttest\n%s' % HTML_URL)
     
+    def test_templ_tag_remote_file(self):
+        '''mail.gen_mail with url => with url tag '''
+        tmpl = gen_template('testtest%stest')
+        m = gen_mail(tmpl, RECIPIENTS, URL)
+        self.assertEqual(get_mail_plain_body(m), 'testtest%stest' % URL)
+        self.assertEqual(get_mail_html_body(m), 'testtest%stest' % HTML_URL)
     
 if sys.version < '3':
     try:
