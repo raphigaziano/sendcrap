@@ -94,36 +94,29 @@ class TestTemplates(unittest.TestCase):
     
     def test_templ_no_tag_local_file(self):
         '''mail.gen_mail with local file => template not containing any url tag'''
-        tmpl = gen_template('testtesttesttest')
-        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        m = gen_mail(gen_template('testtesttesttest'), RECIPIENTS, PATH)
         self.assertEqual(get_mail_plain_body(m), 'testtesttesttest')
 
     def test_templ_tag_local_file(self):
         '''mail.gen_mail with local file => template containing url tag to be stripped'''
-        tmpl = gen_template('testtest%stest')
-        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        m = gen_mail(gen_template('testtest%stest'), RECIPIENTS, PATH)
         self.assertEqual(get_mail_plain_body(m), 'testtesttest')
-        tmpl = gen_template('testtest\n%s\ntest')
-        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        m = gen_mail(gen_template('testtest\n%s\ntest'), RECIPIENTS, PATH)
         self.assertEqual(get_mail_plain_body(m), 'testtesttest')
-        tmpl = gen_template('testtest%s\ntest')
-        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        m = gen_mail(gen_template('testtest%s\ntest'), RECIPIENTS, PATH)
         self.assertEqual(get_mail_plain_body(m), 'testtesttest')
-        tmpl = gen_template('testtest\n%stest')
-        m = gen_mail(tmpl, RECIPIENTS, PATH)
+        m = gen_mail(gen_template('testtest\n%stest'), RECIPIENTS, PATH)
         self.assertEqual(get_mail_plain_body(m), 'testtesttest')
 
     def test_templ_no_tag_remote_file(self):
         '''mail.gen_mail with url => no url tag '''
-        tmpl = gen_template('testtesttest')
-        m = gen_mail(tmpl, RECIPIENTS, URL)
+        m = gen_mail(gen_template('testtesttest'), RECIPIENTS, URL)
         self.assertEqual(get_mail_plain_body(m), 'testtesttest\n%s' % URL)
         self.assertEqual(get_mail_html_body(m), 'testtesttest\n%s' % HTML_URL)
     
     def test_templ_tag_remote_file(self):
         '''mail.gen_mail with url => with url tag '''
-        tmpl = gen_template('testtest%stest')
-        m = gen_mail(tmpl, RECIPIENTS, URL)
+        m = gen_mail(gen_template('testtest%stest'), RECIPIENTS, URL)
         self.assertEqual(get_mail_plain_body(m), 'testtest%stest' % URL)
         self.assertEqual(get_mail_html_body(m), 'testtest%stest' % HTML_URL)
     
