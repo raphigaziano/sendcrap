@@ -8,7 +8,7 @@ Hmm... Most of those tests are testing python dicts rather than
 anything else...
 """
 import unittest
-import imp
+import imp, importlib
 import conf_sample as conf
 
 class TestConfig(unittest.TestCase):
@@ -25,7 +25,6 @@ class TestConfig(unittest.TestCase):
     
     def test_read_conf(self):
         '''Retrieving data from the config file'''
-        self.assertEqual("", conf.GOOGLE_API_KEY)
         self.assertEqual("bob@bob.com", conf.CONTACTS.get('bob'))
         self.assertTrue('marylou' in conf.CONTACTS)
         
@@ -48,6 +47,24 @@ class TestConfig(unittest.TestCase):
         self.assertEqual('bob@bob.com', 
                          conf.CONTACTS[conf.GROUPS['pals'][0]]
         )
+        
+    def test_import_uploader(self):
+        '''Importing uploader module specified in conf'''
+        mod = None
+        import_string = 'sendcrap.uploaders.%s' % conf.UPLOADER
+        try:
+            mod = importlib.import_module(import_string)
+        except ImportError:
+            self.fail('Unable to import %s module' % conf.UPLOADER)
+        self.assertEqual(str(type(mod)), "<type 'module'>")
+        
+    def test_invalid_uploader(self):
+        '''Trying to import a non existent uploader module should fail'''
+        conf.UPLOADER = "randomcrap"
+        import_string = 'sendcrap.uploaders.%s' % conf.UPLOADER
+        self.assertRaises(ImportError, 
+                          importlib.import_module,
+                          import_string)        
 
     # This is testing configuration sanity rather than actual code...
     def test_groups_vals(self):
