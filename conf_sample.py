@@ -1,8 +1,3 @@
-GOOGLE_API_KEY = ""
-
-GOOGLE_LOGIN = ""
-GOOGLE_PSWRD = ""
-
 MAIL_LOGIN = ""
 MAIL_PSWRD = ""
 SMTP_SERVR = ""
@@ -14,6 +9,8 @@ SENDER_EMAIL = ""
 # Use None if no max
 ATTACHMENT_MAX_SIZE = 1024 * 1024 * 20  # 20 Mbs
 FILE_SIZE_WARN      = 1024 * 1024 * 200 # 200 Mbs
+
+UPLOADER = "googledrive"
 
 CONTACTS = dict(
     bob     = "bob@bob.com",
