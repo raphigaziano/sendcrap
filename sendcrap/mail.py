@@ -140,9 +140,9 @@ class SMTPSender(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # Tempo:
-        utils.forced_output(exc_type)
-        utils.forced_output(exc_val)
-        utils.forced_output(exc_tb)
+        #~ utils.forced_output(exc_type)
+        #~ utils.forced_output(exc_val)
+        #~ utils.forced_output(exc_tb)
         
         self.smtp.close()
         return True # Prevent exception propagation
@@ -159,7 +159,7 @@ def send_mail(tmpl, recipients, file_ ):
         smtp.login(login, pswd)
         res = smtp.sendmail(conf.SENDER_EMAIL, recipients, 
                             msg.as_string())
-    # res contains 
+    # res contains (from python doc):
     # "a dictionary, with one entry for each recipient that was refused. 
     # Each entry contains a tuple of the SMTP error code and the 
     # accompanying error message sent by the server."
