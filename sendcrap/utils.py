@@ -132,6 +132,18 @@ def forced_output(msg):
     message
     '''
     return _output(msg)
+    
+# adapted from:
+# http://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
+def cli_progressbar(label, val, end_val=100, bar_length=20):
+    '''
+    @TODO DOC + doctests
+    '''
+    percent = float(val) / end_val
+    hashes = '#' * int(round(percent * bar_length))
+    spaces = ' ' * (bar_length - len(hashes))
+    sys.stdout.write("\r{0}[{1}] {2}%".format(label, hashes + spaces, int(round(percent * 100))))
+    sys.stdout.flush()
 
 ### User Interaction ###
 ########################
@@ -212,12 +224,21 @@ def valid_http_url(url):
     host, path = urlparse.urlsplit(url)[1:3]
     found = False
     try:
-        connection = httplib.HTTPConnection(host)  ## Make HTTPConnection Object
+        if url.upper()[:6] == 'HTTPS:':
+            connection = httplib.HTTPSConnection(host)
+        else:
+            connection = httplib.HTTPConnection(host)
+        #~ connection = httplib.HTTPConnection(host)  ## Make HTTPConnection Object
         connection.request("HEAD", path)
         responseOb = connection.getresponse()      ## Grab HTTPResponse Object
 
         if responseOb.status == 200:
             found = True
+        # Redirects:
+        #~ elif responseOb.status in (301,302,):
+            #~ import pdb; pdb.set_trace()
+            #~ url = responseOb.getheader('location', '')
+            #~ return valid_http_url(url)
         else:
             output("Status %d %s : %s" % (responseOb.status, 
                                           responseOb.reason, url))
