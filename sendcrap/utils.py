@@ -238,6 +238,9 @@ def valid_http_url(url):
         elif responseOb.status in (301,302,):
             url = responseOb.getheader('location', '')
             return valid_http_url(url)
+        else:
+            output("Status %d %s : %s" % (responseOb.status, 
+                                          responseOb.reason, url))
     except Exception as e:
         output("\n".join([str(e.__class__),  str(e), url]))
     return found
