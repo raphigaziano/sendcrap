@@ -3,6 +3,7 @@
 '''
 DOCDOCDOC
 '''
+from __future__ import print_function # Prevent test failures in py3
 import sys, os
 import httplib2
 
@@ -13,7 +14,7 @@ from oauth2client.file import Storage
 from oauth2client.client import AccessTokenRefreshError 
 from oauth2client.tools import run
 
-from sendcrap import utils
+from sendcrap import conf, utils
 
 # Copy your credentials from the APIs Console
 SENDCRAP_ID     = '282067003773.apps.googleusercontent.com'
@@ -32,7 +33,7 @@ def upload_file(file_path):
     flow = OAuth2WebServerFlow(SENDCRAP_ID, SENDCRAP_SECRET,
                                OAUTH_SCOPE, REDIRECT_URI)
 
-    storage = Storage('googl.tok')
+    storage = Storage(os.path.join(conf.CONF_DIR, 'googl.tok'))
     credentials = storage.get() 
     # Si le fichier n'existe pas, ou n'est pas valide, on demande une 
     # authorisation, le fonctionnement est directement dans l'API de 
@@ -76,9 +77,10 @@ def upload_file(file_path):
         }
         drive_service.permissions().insert(
             fileId=response['id'], body=permissions).execute()
-        return drive_service.files().get(
+        file_url =  drive_service.files().get(
             fileId=response['id']).execute()['alternateLink']
-            
+        return file_url.encode('utf-8')
+        
     except AccessTokenRefreshError:
         utils.forced_output("The credentials have been revoked or "
                             "expired, please re-run the application to "
@@ -90,4 +92,4 @@ if __name__ == '__main__':
     # Testing
     f = os.path.abspath('./data/test-data/randomcrap.txt')
     url = upload_file(f)
-    print url
+    print(url)
