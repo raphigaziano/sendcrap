@@ -12,12 +12,10 @@ Version: 1.0
 import sys
 import os
 import tarfile
-import conf
-from . import utils
+from . import conf, utils
 
 __ALL__ = ['write']
         
-
 # @TODO: try using shutils.make_archive
 def write(path, *files):
     '''
@@ -32,7 +30,7 @@ def write(path, *files):
                   a variable number of strings.
     @return:      Path to the created archive.
     '''
-    dirname = os.path.basename(path)
+    dirname = os.path.basename(os.path.abspath(path))
     tarname = '%s.tar' % dirname
     tar_path = os.path.join(path, tarname)
     # Warn user if file size is considered too big
@@ -44,9 +42,10 @@ def write(path, *files):
     # the tar inside the zip.
     with tarfile.open(tar_path, 'w') as tf:
         for f in files:
-            utils.verbose_output("Adding %s to %s..." % (f, tarname))
+            path = os.path.relpath(f)
+            utils.verbose_output("Adding %s to %s..." % (path, tarname))
             try:
-                tf.add(f)
+                tf.add(path)
             # ???
             # If given a single list for *files, windows will raise
             # a TypeError, while linux will raise an AttributeError ???

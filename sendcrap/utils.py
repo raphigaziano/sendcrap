@@ -11,7 +11,7 @@ Version: 1.0
 """
 import os, sys, logging
 try: 
-    import conf
+    from . import conf
 except ImportError:
     # Dummy conf object for testing
     conf = type('conf', (object,), dict(quiet=False, verbose=False))
@@ -235,10 +235,10 @@ def valid_http_url(url):
         if responseOb.status == 200:
             found = True
         # Redirects:
-        #~ elif responseOb.status in (301,302,):
-            #~ import pdb; pdb.set_trace()
-            #~ url = responseOb.getheader('location', '')
-            #~ return valid_http_url(url)
+        elif responseOb.status in (301,302,):
+            import pdb; pdb.set_trace()
+            url = responseOb.getheader('location', '')
+            return valid_http_url(url)
         else:
             output("Status %d %s : %s" % (responseOb.status, 
                                           responseOb.reason, url))

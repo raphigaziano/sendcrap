@@ -13,7 +13,7 @@ Version: 1.0
 """
 import os
 import argparse
-import conf
+from . import conf
 
 __ALL__ = ['parse_args', 'process_args']
     
@@ -138,7 +138,7 @@ doc_footer = \
 '''
 
 _parser = argparse.ArgumentParser(description=doc_header, 
-                                 epilog=doc_footer)
+                                  epilog=doc_footer)
 
 #-- flags
 flags = _parser.add_argument_group('flags')

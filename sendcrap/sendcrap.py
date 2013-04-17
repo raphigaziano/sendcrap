@@ -10,14 +10,24 @@ Created: 19/01/2013
 Version: 1.0
 """
 import sys
+import importlib
 from . import utils, args, tar, mail
 # checking conf file on startup
 try:
-    import conf
+    from . import conf
 except (SyntaxError, AssertionError) as e:
     utils.forced_output("Conf Error!")
     utils.forced_output(str(e))
     sys.exit(1)
+try:
+    uploader = importlib.import_module(
+        'sendcrap.uploaders.%s' % conf.UPLOADER)
+except ImportError:
+    utils.forced_output("Conf Error!")
+    utils.forced_output("No module named %s was found in the uploaders "
+                        "package" % conf.UPLOADER)
+    sys.exit(1)
+    
 
 def main():
     opts = args.parse_args()
@@ -33,18 +43,18 @@ def main():
         return 0
     
     try:
-        tar.write(opts.dir, *f)
+        tar_path = tar.write(opts.dir, *f)
     except SystemExit: # User cancelled
         return 0
         # + Errors
     
     template = mail.get_template(opts.template)
-    print template # DUM DUMMY
-    
-    #~ if rartoobig:
-        #~ upload_rar
-    #~ 
-    #~ send_mail(template, opt tar_path?)
+    # @TODO: Check for exe in tar (stoopid gmail!)
+    if not utils.check_size(conf.ATTACHMENT_MAX_SIZE, *f):
+        tar_path = uploader.upload_file(tar_path)
+        
+    if template is not None: 
+        mail.send_mail(template, m, tar_path)
         
     # Exit code, picked up by sys.exit
     return 0

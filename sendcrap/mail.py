@@ -26,8 +26,7 @@ except ImportError: #py3
     from email.utils import COMMASPACE, formatdate
     import email.encoders as Encoders
 
-import conf
-from . import utils
+from . import conf, utils
 
 __ALL__ = ['get_template', 'send_mail']
 
@@ -45,8 +44,9 @@ def get_template(tmpl):
     @returns:    Dict template {header, body}. 
     '''
     default  = conf.MAIL_TMPLS.get(conf.default_template, None)
-    return conf.MAIL_TMPLS.get(tmpl, default) or type_mail()
-
+    tmpl =  conf.MAIL_TMPLS.get(tmpl, default) or type_mail()
+    return tmpl
+    
 def type_mail(_print_header_help=True): 
     '''
     Prompt the user to type its mail interactively.
