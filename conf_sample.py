@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
 MAIL_LOGIN = ""
 MAIL_PSWRD = ""
 SMTP_SERVR = ""
