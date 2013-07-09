@@ -1,0 +1,2 @@
+appdirs
+google-api-python-client
