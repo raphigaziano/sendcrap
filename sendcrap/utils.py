@@ -195,6 +195,26 @@ def check_size_warn(max_, *files):
         'Are you sure you want to upload that much data ? '
         % conf.FILE_SIZE_WARN)
         
+### Files listing ###
+#####################
+
+def list_files(startdir, recursive=False, abspathes=True):
+    """
+    Yield files contained in `startdir`.
+    Optionnal parameters:
+    `recursive`: Look for files recursively. Defaults to False.
+    `abspathes`: Return absolute pathes. Defaults to True.
+    """
+    for f in os.listdir(startdir):
+        path = os.path.join(startdir, f)
+        if os.path.isfile(path):
+            if abspathes:
+                path = os.path.abspath(path)
+            yield path
+        elif recursive and os.path.isdir(path):
+            for sub in list_files(path, recursive, abspathes):
+                yield sub
+
 ### Path Checkers ###
 ######################
     
