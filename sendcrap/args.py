@@ -14,6 +14,7 @@ Version: 1.0
 import os
 import argparse
 from . import conf
+from . import utils
 
 __ALL__ = ['parse_args', 'process_args']
     
@@ -37,15 +38,8 @@ def _list_files(dir_=None, walk=False, exts=None, arbs=None):
     if arbs is None: arbs = []
     all_files = []
     if dir_ is not None:
-        if walk:
-            for root, dirs, files in os.walk(dir_):
-                for f in files:
-                    all_files.append(os.path.join(root, f))
-        else:
-            for f in os.listdir(dir_):
-                p = os.path.join(dir_, f)
-                if os.path.isfile(p):
-                    all_files.append(p)
+        all_files = utils.list_files(dir_, walk)
+
     # Filter by extension
     if exts:
         all_files = [f  for f in all_files 
