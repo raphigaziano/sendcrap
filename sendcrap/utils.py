@@ -10,6 +10,7 @@ Created: 24/01/2013
 Version: 1.0
 """
 import os, sys, logging
+import fnmatch
 try: 
     from . import conf
 except ImportError:
@@ -198,14 +199,15 @@ def check_size_warn(max_, *files):
 ### Files listing ###
 #####################
 
-def list_files(startdir, recursive=False, abspathes=True):
+def list_files(startdir, recursive=False, abspathes=True, pattern=None):
     """
     Yield files contained in `startdir`.
     Optionnal parameters:
     `recursive`: Look for files recursively. Defaults to False.
     `abspathes`: Return absolute pathes. Defaults to True.
     """
-    for f in os.listdir(startdir):
+    for f in fnmatch.filter(os.listdir(startdir),
+                            pattern if pattern else '*'):
         path = os.path.join(startdir, f)
         if os.path.isfile(path):
             if abspathes:
