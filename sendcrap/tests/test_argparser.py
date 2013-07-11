@@ -11,8 +11,8 @@ except ImportError: # py3
     except ImportError: from io import StringIO
 import unittest
 import imp
-from sendcrap.args import _parser as parser, process_args
-#~ from sendcrap.args import InvalidArgumentsException
+from docopt import DocoptExit
+from sendcrap.args import parse_args, process_args
 # Replacing args conf with the dummy sample config file
 from sendcrap import args
 import conf_sample as conf
@@ -20,7 +20,7 @@ args.conf = conf
 
 def _args(args):
     '''Common helper for the individual tests - parse the given args'''
-    return parser.parse_args(args.split())
+    return parse_args(args.split())
 
 def _pargs(args):
     '''Common helper for the individual tests - process the given args'''
@@ -56,8 +56,8 @@ class TestArgParser(unittest.TestCase):
             self.assertTrue(len(self.mlist) == len(conf.GROUPS[grp]))
 
     def test_mlist_len_contacts(self):
-        '''process_args should return the right number of mail adresses for a given group'''
-        self._p('-c %s' % " ".join([c for c in conf.CONTACTS]))
+        '''process_args should return the right number of mail adresses for a given set of contacts'''
+        self._p('-c ' + ' -c '.join([c for c in conf.CONTACTS]))
         self.assertTrue(len(self.mlist) == len(conf.CONTACTS))
 
     # flags setting
@@ -104,12 +104,12 @@ class TestArgParserInput(unittest.TestCase):
         
     def test_non_existent_flag(self):
         '''Argument parser should die if given inexistant flags'''
-        self._assertSysExit(_args, '-o')
-        self._assertSysExit(_args, '-gjk')
-        self._assertSysExit(_args, '-o -g -t')
+        self.assertRaises(DocoptExit, _args, '-o')
+        self.assertRaises(DocoptExit, _args, '-xjk')
+        self.assertRaises(DocoptExit, _args, '-o -g -t')
         # Non existent along with correct flags:
-        self._assertSysExit(_args, '-ro')
-        self._assertSysExit(_args, '-r -o')
+        self.assertRaises(DocoptExit, _args, '-ro')
+        self.assertRaises(DocoptExit, _args, '-r -o')
 
     def test_non_existent_opts(self):
         '''Argument parser should die if given inexistant options'''
@@ -140,11 +140,11 @@ class TestArgParserInput(unittest.TestCase):
     
     def test_invalid_choices(self):
         '''Argument parser should die if given an unallowed option'''
-        self._assertSysExit(_args, '-c doc')
-        self._assertSysExit(_args, '-c bob doc')
-        self._assertSysExit(_args, '-g family')
-        self._assertSysExit(_args, '-g work family')
-        self._assertSysExit(_args, '-g family -c doc')
+        self.assertRaises(DocoptExit, _args, '-c doc')
+        self.assertRaises(DocoptExit, _args, '-c bob doc')
+        self.assertRaises(DocoptExit, _args, '-g family')
+        self.assertRaises(DocoptExit, _args, '-g work family')
+        self.assertRaises(DocoptExit, _args, '-g family -c doc')
     
 def suite():
     suite = unittest.TestSuite()
