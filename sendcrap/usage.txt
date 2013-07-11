@@ -1,0 +1,25 @@
+Usage: 
+    sendcrap [-rd] [-v|-q] 
+             [-f FILE]... [-e EXT]... [-g GROUP]... [-c CONTACT]...
+             [-a ADDRESS]... [-t TEMPLATE] [--] [<dir>]
+    sendcrap -h | --help
+
+Options:
+-h --help                           Show this help message and exit.
+-v --verbose  
+-q --quiet
+-r --recursive                      Search directories recursively. 
+-d --dummy                          Dummy run: Show what will be sent and to whom, but don't
+                                    actually do anything.
+<dir>				                Target directory, which will be archived as a tar file and
+                                    sent to the specified contacts.
+                                    Defaults to the current directory.
+-f FILE --files=FILE                List of arbitrary files to add to the selection.
+-e EXT --exts EXT                   Filter selection based on the provided list of file      
+                                    extensions. Extensions can be provided with or without a 
+                                    leading dot (Eg both ".txt" & "txt" will work).
+-g GROUP --groups GROUP             popopo 
+-c CONTACT --contacts CONTACT       popopo
+-a ADRESS --addr ADRESS             popopo
+-t TEMPLATE --template TEMPLATE     jjjjpopopo
+

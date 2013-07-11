@@ -15,7 +15,6 @@ import sys
 import os
 import re
 import docopt
-from sendcrap import __doc__ as DOC
 from . import conf
 from . import utils
 
@@ -93,7 +92,9 @@ def parse_args(args=None):
     '''Convenience wrapper around the docopt parser'''
     if args is None:
         args = sys.argv[1:]
-        args = docopt.docopt(DOC, args)
+    usage_path = os.path.join(os.path.dirname(__file__), 'usage.txt')
+    with open(usage_path, 'r') as u_f:
+        args = docopt.docopt(u_f.read(), args)
         return Arguments(args)
     
 def process_args(args=None):
