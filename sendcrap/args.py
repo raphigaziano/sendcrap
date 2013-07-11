@@ -82,11 +82,45 @@ def _get_recipients(grps=None, contacts=None, arbs=None):
 ### Args Processing ###
 #######################
 
+def _check_dir(dir_):
+    ''' '''
+    if dir_ is None: return True
+    return os.path.isdir(dir_)
+
+def _check_files(files):
+    ''' '''
+    if not files: return True
+    return all(os.path.isfile(f) for f in files)
+
 class Arguments(object):
     '''Wrapper class around docopt's args dictionnary'''
+
+    arg_checkers = {
+            'dir': _check_dir,
+            'files': _check_files
+    }
+
     def __init__(self, args):
-        to_name = lambda s: re.sub('\W', '_', s).strip('_')
-        self.__dict__ = {to_name(k): v for k, v in args.items()}
+        for k, v in args.items():
+            arg_name = self._to_name(k)
+            if self._check_arg(arg_name, v):
+                self.__dict__[arg_name] = v
+            else:
+                raise ValueError('Invalid argument %s %s' % (k, v))
+
+    def _to_name(self, key):
+        '''
+        Convert dict key to a valid attribute name, removing any special 
+        characters.
+        '''
+        return re.sub('\W', '_', key).strip('_')
+
+    def _check_arg(self, arg, val):
+        '''Single argument validation'''
+        checker = self.arg_checkers.get(arg, None)
+        if checker is not None: 
+            return checker(val)
+        return True
     
 def parse_args(args=None):
     '''Convenience wrapper around the docopt parser'''

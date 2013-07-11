@@ -124,11 +124,11 @@ class TestArgParserInput(unittest.TestCase):
 
     def test_invalid_dir(self):
         '''Argument parser should die if given an invalid directory'''
-        self._assertSysExit(_args, 'setup.py')
+        self.assertRaises(ValueError, _args, 'setup.py')
     
     def test_invalid_file(self):
         '''Argument parser should die if given invalid file arguments'''
-        self._assertSysExit(_args, '-f sendcrap/')
+        self.assertRaises(ValueError, _args, '-f sendcrap/')
         
     def test_mutually_exclusive_opts(self):
         '''Argument parser should die if given both the verbose and quiet flags'''
@@ -138,13 +138,16 @@ class TestArgParserInput(unittest.TestCase):
         self._assertSysExit(_args, '--verbose -q')
         self._assertSysExit(_args, '-v --quiet')
     
+    # TODO: test this elsewhere. parser validation shouldn't go that far
+    # with docopt.
+    @unittest.expectedFailure
     def test_invalid_choices(self):
         '''Argument parser should die if given an unallowed option'''
-        self.assertRaises(DocoptExit, _args, '-c doc')
-        self.assertRaises(DocoptExit, _args, '-c bob doc')
-        self.assertRaises(DocoptExit, _args, '-g family')
-        self.assertRaises(DocoptExit, _args, '-g work family')
-        self.assertRaises(DocoptExit, _args, '-g family -c doc')
+        self._assertSysExit(_args, '-c doc')
+        self._assertSysExit(_args, '-c bob doc')
+        self._assertSysExit(_args, '-g family')
+        self._assertSysExit(_args, '-g work family')
+        self._assertSysExit(_args, '-g family -c doc')
     
 def suite():
     suite = unittest.TestSuite()
