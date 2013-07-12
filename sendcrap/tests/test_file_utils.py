@@ -17,8 +17,8 @@ TEST_SINGLE_SIZE = 1010624 # Size (in bytes) of wagonrythm.mp3
 TEST_MULTIPLE_SIZE = 1085283
 TEST_MAX_SIZE = TEST_SINGLE_SIZE + TEST_MULTIPLE_SIZE 
 
-from sendcrap.utils import get_size, check_size
-        
+from sendcrap.utils import get_size, check_size, list_files
+
 class TestFileSizeChecks(unittest.TestCase):
     '''File size checking tests'''
     def setUp(self): pass        
@@ -49,7 +49,7 @@ INVALID_URL  = 'http://www.python.org/rtfm/wtf/LOL.php'
 VALID_PATH   = __file__
 INVALID_PATH = 'random/crap/path/lol'
 
-class TestFileCheckers(unittest.TestCase):
+class TestPathCheckers(unittest.TestCase):
     def setUp(self): pass
     def tearDown(self): pass
     
@@ -73,8 +73,71 @@ class TestFileCheckers(unittest.TestCase):
         self.assertFalse(valid_local_path(INVALID_PATH))
         self.assertFalse(valid_local_path(VALID_URL))
         self.assertFalse(valid_local_path(INVALID_URL))
+
+class TestListFiles(unittest.TestCase):
+
+    root_dir = os.path.join(
+         os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+         'data/test-data'
+    )
+
+    def setUp(self):
+        if os.path.isfile(os.path.join(self.root_dir, 'data.tar')):
+            os.remove(os.path.join(self.root_dir, 'data.tar'))
+
+    def tearDown(self): pass
+
+    def _match(self, pattern=None):
+        '''Helper'''
+        return list(list_files(self.root_dir, recursive=True,
+                               abspathes=False, pattern=pattern)
+               )
+
+    def _check_match(self, expected, pattern=None):
+        '''Helper'''
+        self.assertListEqual(expected, self._match(pattern))
+
+    def test_list_files(self):
+        '''Default file listing'''
+        # TODO: Flesh me out!
+        expected = [
+            'data/test-data/tumblr_m0byyulRLo1qc5ep4o1_500.jpg',
+            'data/test-data/randomcrap.txt',
+            'data/test-data/CV_rGaziano_dev_2012.pdf'
+        ]                              
+        expected = [os.path.abspath(p) for p in expected]
+        res = list(list_files(self.root_dir))
+        self.assertListEqual(expected, res)
+
+    def test_pattern_matching_no_pattern(self):
+        '''Pattern matching - defaulting to all'''
+        expected = [
+            'data/test-data/tumblr_m0byyulRLo1qc5ep4o1_500.jpg',
+            'data/test-data/subdir/honkytonkbooze.txt',
+            'data/test-data/subdir/wagonrythm.mp3',
+            'data/test-data/randomcrap.txt',
+            'data/test-data/CV_rGaziano_dev_2012.pdf'
+        ]                              
+        self._check_match(expected)
+
+    def test_pattern_matching(self):
+        '''Various pattern matching tests'''
+        # TODO: Flesh me out!
+        expected = [
+            'data/test-data/subdir/honkytonkbooze.txt',
+            'data/test-data/randomcrap.txt',
+        ]                              
+        self._check_match(expected, '*.txt')
+        expected = [
+            'data/test-data/tumblr_m0byyulRLo1qc5ep4o1_500.jpg',
+            'data/test-data/subdir/honkytonkbooze.txt',
+            'data/test-data/subdir/wagonrythm.mp3'
+        ]                              
+        self._check_match(expected, '*y*')
         
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestFileSizeChecks))
+    suite.addTest(unittest.makeSuite(TestPathCheckers))
+    suite.addTest(unittest.makeSuite(TestListFiles))
     return suite
